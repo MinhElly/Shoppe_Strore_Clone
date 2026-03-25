@@ -114,35 +114,34 @@ http://localhost:(your_port)/Shoppe_Store
 
 ## 📷 Demo
 Giao diện trang home. Dùng được chức năng danh mục, gợi ý sản phẩm và phân trang
-* ![alt text](image.png)
-* ![alt text](image-1.png)
-* ![alt text](image-2.png)
-* ![alt text](image-3.png)
+* ![home](images/home.png)
+* ![home](images/home-1.png)
+* ![home](images/home-2.png)
+* ![home](images/home-3.png)
 
 Đăng nhập & Đăng ký
-* ![alt text](image-7.png)
-* ![alt text](image-8.png)
+* ![login](images/login.png)
+* ![login](images/register.png)
 
 Chi tiết sản phẩm
-* ![alt text](image-4.png)
-* ![alt text](image-5.png)
+* ![product](images/product.png)
+* ![product](images/product-1.png)
 
 Danh mục cho từng loại sản phẩm
-* ![alt text](image-6.png)
+* ![cate](images/cate.png)
 
 Quản lý - Admin
-* ![alt text](image-9.png)
-* ![alt text](image-10.png)
-* ![alt text](image-11.png)
+* ![admin](images/admin-1.png)
+* ![admin](images/admin-2.png)
+* ![admin](images/admin-3.png)
 
 User - Người dùng 
-* ![alt text](image-12.png)
+* ![user](images/user.png)
 
 Cart - Giỏ Hàng
-    * ![alt text](image-13.png)
-    * ![alt text](image-14.png)
-    * ![alt text](image-15.png)
----
+    * ![cart](images/cart.png)
+    * ![cart](images/cart-1.png)
+    * ![cart](images/cart-2.png)
 
 ## ❗Thông tin thêm
 
