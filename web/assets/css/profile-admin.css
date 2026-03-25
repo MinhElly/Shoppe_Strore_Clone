@@ -1,0 +1,493 @@
+/* ================= BỐ CỤC CHUNG ================= */
+.profile-container {
+    /* Đẩy toàn bộ nội dung xuống dưới gầm Header */
+    padding-top: 140px; 
+    padding-bottom: 50px;
+    background-color: #f5f5f5;
+}
+/* ================= SIDEBAR TRÁI (MENU ADMIN) ================= */
+.admin-sidebar__user {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 10px;
+}
+
+.admin-sidebar__user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.09);
+    object-fit: cover;
+}
+
+.admin-sidebar__user-info {
+    margin-left: 15px;
+}
+
+.admin-sidebar__user-name {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.admin-sidebar__user-edit {
+    color: #888;
+    font-size: 1.3rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.admin-sidebar__user-edit i {
+    margin-right: 4px;
+}
+
+.admin-sidebar__menu {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.admin-sidebar__menu-item {
+    margin-bottom: 15px;
+}
+
+.admin-sidebar__menu-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.4rem;
+    transition: color 0.2s;
+}
+
+.admin-sidebar__menu-link:hover,
+.admin-sidebar__menu-item--active .admin-sidebar__menu-link {
+    color: var(--primary-color);
+}
+
+.admin-sidebar__menu-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-right: 10px;
+}
+/* Màu sắc icon giống Shopee */
+.icon-blue { color: #0f4c81; }
+.icon-orange { color: #ff5722; }
+.icon-green { color: #00bfa5; }
+.icon-red { color: #d0011b; }
+
+/* ================= NỘI DUNG BÊN PHẢI ================= */
+/* 1. Thanh Tabs */
+.admin-tabs {
+    display: flex;
+    background-color: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+}
+
+.admin-tabs__item {
+    flex: 1;
+    text-align: center;
+}
+
+.admin-tabs__link {
+    display: block;
+    padding: 16px 0;
+    font-size: 1.4rem;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.admin-tabs__item--active .admin-tabs__link,
+.admin-tabs__link:hover {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* 2. Thanh Tìm kiếm */
+.admin-search {
+    display: flex;
+    align-items: center;
+    background-color: #eaeaea;
+    padding: 10px 15px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+}
+
+.admin-search i {
+    font-size: 1.4rem;
+    color: #888;
+    margin-right: 12px;
+}
+
+.admin-search input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+/* 3. Card Đơn Hàng */
+.admin-order {
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    border-radius: 2px;
+    margin-bottom: 15px;
+}
+
+.admin-order__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.admin-order__shop-info {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.admin-order__label {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 2px 4px;
+    border-radius: 2px;
+    margin-right: 8px;
+}
+
+.admin-order__status {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+}
+
+.admin-order__status--cancel {
+    color: #ee4d2d;
+}
+
+.admin-order__body {
+    display: flex;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.admin-order__img {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #e1e1e1;
+    object-fit: cover;
+}
+
+.admin-order__detail {
+    flex: 1;
+    padding: 0 15px;
+}
+
+.admin-order__name {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 0 0 5px 0;
+    line-height: 1.6rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.admin-order__variant {
+    font-size: 1.4rem;
+    color: #888;
+    margin: 0 0 5px 0;
+}
+
+.admin-order__qty {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 0;
+}
+
+.admin-order__price {
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.admin-order__footer {
+    padding: 20px;
+    background-color: #fffefb;
+}
+
+.admin-order__total {
+    text-align: right;
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.admin-order__total-price {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-left: 10px;
+}
+
+.admin-order__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-order__note {
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.admin-order__btn-group {
+    display: flex;
+}
+
+.admin-order__btn {
+    min-width: 150px;
+    height: 40px;
+    margin-left: 10px;
+    font-size: 1.4rem;
+    text-transform: capitalize;
+}
+
+.admin-order__btn--outline {
+    background-color: #fff;
+    color: #555;
+    border: 1px solid rgba(0,0,0,.09);
+}
+
+.admin-order__btn--outline:hover {
+    background-color: #f8f8f8;
+}
+
+/* ================= KHU VỰC BẢNG DỮ LIỆU (DATA TABLE) ================= */
+.admin-data-card {
+    background-color: var(--white-color);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    padding: 20px;
+    min-height: 500px;
+}
+
+.admin-data-card__header {
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: 500;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #efefef;
+    display: flex;
+    align-items: center;
+}
+
+.admin-data-card__header i {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+/* Thanh điều khiển (Show entries & Search) */
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    color: #555;
+}
+
+.table-controls select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    outline: none;
+}
+
+.table-controls input {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    outline: none;
+    margin-left: 10px;
+    width: 200px;
+}
+
+.table-controls input:focus {
+    border-color: var(--primary-color);
+}
+
+/* CSS Bảng (Table) */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.4rem;
+    text-align: left;
+}
+
+.admin-table thead {
+    background-color: #fafafa;
+}
+
+.admin-table th {
+    padding: 12px 15px;
+    font-weight: 500;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    border-top: 1px solid #eee;
+    cursor: pointer; /* Cho phép click để sort */
+}
+
+.admin-table th i {
+    color: #ccc;
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+.admin-table td {
+    padding: 15px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Nút Hành Động trong bảng */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-size: 1.3rem;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-action i {
+    margin-right: 5px;
+}
+
+.btn-action--delete {
+    background-color: #d0011b; /* Đỏ */
+}
+
+.btn-action--delete:hover {
+    opacity: 0.8;
+}
+
+/* Khu vực Phân trang dưới đáy bảng */
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #555;
+}
+
+.table-pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.table-pagination li a {
+    display: block;
+    padding: 6px 12px;
+    margin-left: 5px;
+    border: 1px solid #ddd;
+    color: #555;
+    text-decoration: none;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.table-pagination li a:hover {
+    background-color: #f5f5f5;
+}
+
+.table-pagination li.active a {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+/* Nút Thêm mới màu xanh lá */
+.btn-action--add {
+    background-color: #28a745;
+    font-size: 1.4rem;
+    padding: 8px 15px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.btn-action--add:hover {
+    background-color: #218838;
+}
+
+/* Nút Sửa màu xanh dương */
+.btn-action--edit {
+    background-color: #007bff;
+    margin-right: 0;     /* Tạo khoảng cách với nút Xóa bên cạnh */
+}
+.btn-action--edit:hover {
+    background-color: #0069d9;
+}
+
+.action-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Khoảng cách chuẩn giữa 2 nút */
+    white-space: nowrap; /* Bùa chú cấm rớt dòng */
+}
+
+/* Tách đôi thẻ header để đẩy nút Thêm mới sang phải */
+.admin-data-card__header {
+    display: flex;
+    justify-content: space-between; /* Đẩy 2 phần tử ra 2 góc */
+    align-items: center;
+}
+
+.admin-data-card__header-title {
+    display: flex;
+    align-items: center;
+}
+
+/* Chỉnh kích thước ảnh sản phẩm trong bảng */
+.admin-table-img {
+    width: 60px;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #eee;
+    background-color: #fff;
+}
+
+/* Chỉnh lại độ rộng một số cột cho đẹp */
+.col-desc {
+    max-width: 250px;
+    line-height: 1.6;
+}

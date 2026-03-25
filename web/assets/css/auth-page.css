@@ -1,0 +1,217 @@
+/* ================= HEADER TRANG AUTH ================= */
+.header-auth {
+    height: 84px;
+    background-color: var(--white-color);
+    display: flex;
+    align-items: center;
+}
+
+.header-auth__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-auth__logo-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.header-auth__logo {
+    height: 50px; /* Chỉnh độ lớn logo tùy thực tế */
+}
+
+.header-auth__title {
+    font-size: 2.4rem;
+    color: #222;
+    margin-left: 18px;
+    margin-top: 29px;
+    font-weight: 400;
+}
+
+.header-auth__help {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* ================= BACKGROUND & BỐ CỤC CHÍNH ================= */
+.auth-content {
+    background-color: var(--primary-color);
+    padding: 60px 0; /* Tạo khoảng trống trên dưới */
+}
+
+.auth-content__row {
+    align-items: center; /* Căn giữa form và text theo chiều dọc */
+}
+
+.auth-content__branding {
+    text-align: center;
+    color: var(--white-color);
+    padding-right: 20px;
+}
+
+.auth-content__logo-big {
+    width: 250px;
+    margin-bottom: 20px;
+}
+
+.auth-content__slogan {
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+/* ================= ĐIỀU CHỈNH LẠI CLASS AUTH-FORM ================= */
+/* Ghi đè class .auth-form cũ (vốn dùng cho Modal) để dùng cho Page */
+.auth-form {
+    width: 400px;
+    margin: 0 auto;
+    background-color: var(--white-color);
+    border-radius: 2px;
+    box-shadow: 0 3px 10px 0 rgba(0,0,0,.14);
+/*    max-height: none;  Bỏ max-height của bản modal */
+}
+
+.auth-form--page .auth-form__heading {
+    padding: 22px;
+}
+
+/* Icon con mắt cho input mật khẩu */
+.auth-form__input-wrapper {
+    position: relative;
+    margin-bottom: 26px;
+}
+.auth-form__container {
+  padding: 0 30px;
+  font-size: 1.4rem;
+}
+
+.auth-form__heading {
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--black-color);
+  padding: 30px 0;
+}
+
+.auth-form__input {
+  width: 100%;
+  height: 40px;
+  
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  outline: none;
+}
+
+.auth-form__input:focus {
+  border-color: var(--primary-color);
+}
+
+.auth-form__eye-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    color: #333;
+    cursor: pointer;
+/*    margin-top: -13px;  Căn trừ hao margin-bottom của thẻ input */
+}
+.auth-form__footer-text-suggest {
+  color: rgba(0, 0, 0, 0.45);
+}
+.auth-form__control-btn {
+  width: 100%;
+  font-size: 1.6rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.auth-form__separate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.auth-form__separate-text {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 1.2rem;
+}
+
+.auth-form__separate-strikethrough {
+  height: 0.5px;
+  width: 135px;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.auth-form__socials {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.auth-form__socials-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: auto;
+  border: var(--border-color) solid 1px;
+  background-color: var(--white-color);
+  text-decoration: none;
+  color: var(--black-color);
+  font-size: 1.6rem;
+  border-radius: 2px;
+  padding: 0 10px;
+}
+
+.auth-form__socials-btn:hover {
+  background-color: #e5e5e5;
+}
+
+.auth-form__socials-img {
+  font-size: 2rem;
+  margin: 0 6px;
+}
+
+.auth-form__policy-text {
+  padding: 0 34px;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 34px;
+}
+
+
+.auth-form__text-link {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.auth-form__footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  
+}
+
+.auth-form__footer-switch-btn {
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.auth-form__help {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.auth-form__help-link {
+  text-decoration: none;
+  color: #0055aa;
+}

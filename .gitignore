@@ -1,0 +1,22 @@
+# BUILD
+/build/
+/dist/
+/target/
+
+# NETBEANS
+/nbproject/private/
+
+# JAVA
+*.class
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SECRET
+.env

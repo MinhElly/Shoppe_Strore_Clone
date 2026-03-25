@@ -1,0 +1,308 @@
+/* ================= CATEGORY SIDEBAR ================= */
+.category {
+    background-color: transparent;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.category__heading {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 12px 16px 0;
+    margin-top: 0;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+}
+
+.category__heading-icon {
+    font-size: 1.4rem;
+    margin-right: 8px;
+}
+
+.category-list {
+    padding: 0 0 8px 0;
+    list-style: none;
+}
+
+.category-item {
+    position: relative;
+}
+
+.category-item--active .category-item__link {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.category-item--active .category-item__link::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    border: 4px solid;
+    border-color: transparent transparent transparent var(--primary-color);
+}
+
+.category-item__link {
+    position: relative;
+    font-size: 1.4rem;
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 8px 20px;
+    display: block;
+    transition: right linear 0.1s;
+    right: 0;
+}
+
+.category-item__link:hover {
+    right: -4px;
+    color: var(--primary-color);
+}
+
+.category-item__sub {
+    padding-left: 20px;
+}
+
+.category-item__sub .category-item__link {
+    font-size: 1.3rem;
+    padding: 6px 20px;
+}
+
+/* ================= FILTER PANEL ================= */
+.filter-panel {
+    padding-top: 20px;
+}
+
+.filter-group {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.filter-group__heading {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    margin-bottom: 12px;
+    font-weight: 400;
+}
+
+.filter-checkbox-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.filter-checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.filter-checkbox-item label {
+    font-size: 1.3rem;
+    color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    user-select: none;
+}
+
+.filter-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.filter-price__input {
+    width: 45%;
+    height: 30px;
+    padding: 0 5px;
+    font-size: 1.2rem;
+    border: 1px solid #bba;
+    outline: none;
+    border-radius: 2px;
+}
+
+.filter-price__line {
+    width: 10px;
+    height: 1px;
+    background-color: #777;
+}
+
+.filter-btn-apply {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.filter-rating {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.filter-rating .fa-star {
+    color: #ffce3d;
+    font-size: 1.2rem;
+    margin-right: 4px;
+}
+
+.filter-rating .fa-star.empty {
+    color: #d5d5d5;
+}
+
+/* ================= SORTING BAR ================= */
+.home-filter {
+    display: flex;
+    align-items: center;
+    padding: 12px 22px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.03);
+    margin-bottom: 10px;
+}
+
+.home-filter__label {
+    font-size: 1.4rem;
+    color: #555;
+    margin-right: 16px;
+}
+
+.home-filter__btn {
+    min-width: 90px;
+    margin-right: 12px;
+    background-color: var(--white-color);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.home-filter__select {
+    width: 200px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 2px;
+    background-color: var(--white-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.4rem;
+    color: var(--text-color);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.02);
+    cursor: pointer;
+}
+
+.home-filter__page {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.home-filter__page-num {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    margin-right: 22px;
+}
+
+.home-filter__page-current {
+    color: var(--primary-color);
+}
+
+.home-filter__page-control {
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    width: 72px;
+    height: 36px;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.home-filter__page-btn {
+    flex: 1;
+    display: flex;
+    background-color: var(--white-color);
+    text-decoration: none;
+    color: #555;
+    font-size: 1.4rem;
+}
+
+.home-filter__page-btn:first-child {
+    border-right: 1px solid #eee;
+}
+
+.home-filter__page-btn--disabled {
+    background-color: #f9f9f9;
+    cursor: default;
+    color: #ccc;
+}
+
+.home-filter__page-btn i {
+    margin: auto;
+}
+
+/* ================= DROPDOWN GIÁ (SẮP XẾP) ================= */
+/* Thêm position relative để menu con canh vị trí theo nó */
+.home-filter__select {
+    position: relative; 
+    z-index: 1;
+}
+
+/* Khung dropdown xổ xuống */
+.home-filter__select-list {
+    position: absolute;
+    top: calc(100% + 2px); /* Cách nút 2px cho đẹp */
+    left: 0;
+    right: 0;
+    background-color: var(--white-color);
+    border-radius: 2px;
+    padding: 8px 16px;
+    list-style: none; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    display: none; 
+    margin: 0;
+    z-index: 10; /* Quan trọng: Ép nó nổi lên hẳn trên các khối sản phẩm phía dưới */
+}
+
+/* ĐÂY LÀ CÂY CẦU TÀNG HÌNH GIẢI QUYẾT VẤN ĐỀ CỦA BẠN */
+.home-filter__select-list::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -15px; /* Bắc hẳn lên 15px để hứng chuột */
+    left: 0;
+    width: 100%;
+    height: 15px; /* Độ dày của cầu là 15px */
+    background-color: transparent; /* Giữ trong suốt để không ai thấy */
+}
+
+/* Hover vào nút Giá thì hiện cái List lên */
+.home-filter__select:hover .home-filter__select-list {
+    display: block;
+}
+
+/* CSS cho từng lựa chọn bên trong */
+.home-filter__select-item {
+    padding: 8px 0;
+}
+
+.home-filter__select-link {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+}
+
+.home-filter__select-link:hover {
+    color: var(--primary-color);
+}
+
+/* Làm đỏ chữ nếu đang được chọn (Active) */
+.home-filter__select-link--active {
+    color: var(--primary-color);
+}

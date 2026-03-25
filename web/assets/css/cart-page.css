@@ -1,0 +1,352 @@
+/* ================= HEADER TRANG GIỎ HÀNG ================= */
+.header-cart {
+    height: 100px;
+    background-color: var(--white-color);
+    border-bottom: 1px solid rgba(0,0,0,.09);
+    display: flex;
+    align-items: center;
+    position: fixed; /* Gắn chặt header lên trên cùng */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+.cart-container {
+    padding-top: 120px; /* Bù khoảng trống do header fixed */
+    padding-bottom: 50px;
+}
+
+.header-cart__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-cart__logo-wrap {
+    display: flex;
+    align-items: flex-end;
+}
+
+.header-cart__logo {
+    padding-top: 10px;  
+    height: 46px;
+}
+
+.header-cart__title {
+    font-size: 2.4rem;
+    color: var(--primary-color);
+    margin: 15px 0 0 15px;
+    padding-left: 15px;
+    border-left: 1px solid var(--primary-color);
+    font-weight: 400;
+    line-height: 30px;
+}
+
+/* Thanh search trang cart */
+.header-cart__search {
+    display: flex;
+    width: 500px;
+    height: 40px;
+    border: 2px solid var(--primary-color);
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.header-cart__search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 0 15px;
+    font-size: 1.4rem;
+}
+
+.header-cart__search-btn {
+    width: 80px;
+    background-color: var(--primary-color);
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.header-cart__search-btn i {
+    color: var(--white-color);
+    font-size: 1.6rem;
+}
+
+/* ================= CART LAYOUT GIAO DIỆN ================= */
+.cart-page {
+    position: relative;
+}
+
+/* Chia cột cho giỏ hàng (Flexbox) */
+.cart-cell { text-align: center; color: #888; font-size: 1.4rem; }
+.cart-cell--checkbox { width: 5%; display: flex; justify-content: center; align-items: center; }
+.cart-cell--product { width: 45%; text-align: left; }
+.cart-cell--price { width: 15%; }
+.cart-cell--quantity { width: 15%; display: flex; justify-content: center; align-items: center;}
+.cart-cell--total { width: 10%; }
+.cart-cell--action { width: 10%; }
+
+/* Checkbox style */
+.cart-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+/* Header Columns */
+.cart-header {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 16px 20px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
+}
+
+/* Shop Section */
+.cart-shop {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
+    margin-bottom: 15px;
+    padding-bottom: 20px;
+}
+
+.cart-shop__header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f5f5f5;
+    display: flex;
+    align-items: center;
+}
+
+.cart-shop__badge {
+    background-color: #d0011b;
+    color: white;
+    font-size: 1.2rem;
+    padding: 2px 4px;
+    border-radius: 2px;
+    margin: 0 10px;
+}
+
+.cart-shop__name {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: rgba(0,0,0,.8);
+}
+
+/* Item details */
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.cart-cell--product {
+    display: flex;
+}
+
+.cart-item__img {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #e1e1e1;
+    flex-shrink: 0;
+}
+
+.cart-item__info {
+    padding: 0 10px;
+    flex: 1;
+}
+
+.cart-item__name {
+    font-size: 1.4rem;
+    color: rgba(0,0,0,.8);
+    text-decoration: none;
+    line-height: 1.8rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.cart-item__promo {
+    height: 16px;
+    margin-top: 5px;
+}
+
+.cart-item__variant {
+    width: 170px;
+    font-size: 1.4rem;
+    color: #888;
+    flex-shrink: 0;
+}
+
+.cart-item__price {
+    font-size: 1.4rem;
+    color: #222;
+}
+
+.cart-item__total-price {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.cart-item__del-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #222;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+.cart-item__del-btn:hover { color: var(--primary-color); }
+
+.cart-item__similar-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* Nút Tăng Giảm (Tái sử dụng style) */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 2px;
+}
+.quantity-btn {
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    outline: none;
+}
+.quantity-input {
+    width: 40px;
+    height: 32px;
+    border: none;
+    border-left: 1px solid rgba(0,0,0,.09);
+    border-right: 1px solid rgba(0,0,0,.09);
+    text-align: center;
+    font-size: 1.6rem;
+    outline: none;
+}
+
+/* ================= CART BOTTOM BAR (FREEZE EFFECT) ================= */
+.cart-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 16px 20px;
+    border-radius: 3px;
+    
+    /* Thuộc tính quan trọng nhất để tạo hiệu ứng Freeze/Sticky */
+    position: sticky;
+    bottom: 0; 
+    z-index: 10; /* Đảm bảo đè lên các sản phẩm khi cuộn */
+    box-shadow: 0 -2px 10px rgba(0,0,0,.05); /* Tạo bóng đổ nhẹ lên trên */
+}
+
+/* Các thành phần bên trong */
+.cart-bottom__left {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    color: #222;
+}
+
+.cart-bottom__select-all {
+    margin: 0 20px 0 10px;
+    cursor: pointer;
+}
+
+.cart-bottom__del-selected {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: #222;
+    cursor: pointer;
+}
+
+.cart-bottom__del-selected:hover {
+    color: var(--primary-color);
+}
+
+.cart-bottom__right {
+    display: flex;
+    align-items: center;
+}
+
+.cart-bottom__total-wrap {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.cart-bottom__total-label {
+    font-size: 1.6rem;
+    color: #222;
+    margin-right: 10px;
+}
+
+.cart-bottom__total-price {
+    font-size: 2.4rem;
+    color: var(--primary-color);
+    font-weight: 400;
+}
+
+.cart-bottom__checkout-btn {
+    width: 210px;
+    height: 40px;
+    font-size: 1.6rem;
+    text-transform: capitalize;
+}
+/* ================= SUCCESS MODAL (POPUP THÀNH CÔNG) ================= */
+.success-popup {
+    width: 400px;
+    padding: 40px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-popup__icon {
+    font-size: 6rem;
+    color: #4caf50; /* Màu xanh lá cây báo thành công */
+    margin-bottom: 20px;
+}
+
+.success-popup__title {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 0 0 15px 0;
+}
+
+.success-popup__desc {
+    font-size: 1.4rem;
+    color: #757575;
+    line-height: 1.6;
+    margin: 0 0 25px 0;
+}
+
+.success-popup__btn {
+    min-width: 140px;
+    height: 40px;
+    font-size: 1.6rem;
+    margin: 0 auto;
+}
