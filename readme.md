@@ -1,168 +1,250 @@
-# 🛒 Shoppe_Store - Java Web Shopping
+# Shoppee_Store - Java Web Shopping
 
-## 📌 Giới thiệu
+Shoppee_Store là website bán hàng mô phỏng giao diện và một số luồng nghiệp vụ cơ bản của Shopee. Dự án được xây dựng theo mô hình MVC với Java Servlet, JSP, JSTL, JDBC và SQL Server.
 
-**Shoppe_Store** là website bán hàng được xây dựng theo mô hình MVC sử dụng Java Web clone lại giao diện của trang web bán hàng Shopee.
+Dự án phù hợp cho bài thực hành Java Web/PRJ301: người dùng có thể xem sản phẩm, tìm kiếm, thêm vào giỏ hàng và đặt mua; admin có thể quản lý sản phẩm, tài khoản và đơn hàng.
 
-Project hỗ trợ người dùng mua sắm online và admin quản lý sản phẩm.
+## Công nghệ sử dụng
 
----
+- Java Servlet/JSP với Jakarta EE
+- JSTL
+- JDBC
+- SQL Server
+- Apache Tomcat 10.1
+- Apache NetBeans IDE
+- Ant build
+- HTML, CSS, JavaScript
+- Font Awesome
 
-## ✨ Chức năng chính
+## Chức năng chính
 
-### 👤 User
+### Người dùng
 
-* Đăng ký / Đăng nhập
-* Xem danh sách sản phẩm
-* Tìm kiếm sản phẩm
-* Xem chi tiết sản phẩm
-* Thêm vào giỏ hàng
-* Thanh toán
+- Đăng ký tài khoản
+- Đăng nhập/đăng xuất
+- Xem danh sách sản phẩm
+- Xem sản phẩm theo danh mục
+- Tìm kiếm sản phẩm
+- Lọc sản phẩm theo khoảng giá
+- Sắp xếp sản phẩm theo mới nhất, bán chạy, giá tăng/giảm
+- Xem chi tiết sản phẩm
+- Thêm sản phẩm vào giỏ hàng
+- Xem, chọn, cập nhật số lượng và xóa sản phẩm trong giỏ hàng
+- Thanh toán các sản phẩm đã chọn
+- Xem danh sách đơn mua
 
-### 🔑 Admin
+### Admin
 
-* Quản lý sản phẩm
-* Quản lý người dùng
-* Quản lý đơn hàng
+- Xem trang dashboard
+- Quản lý sản phẩm
+- Thêm sản phẩm mới
+- Cập nhật thông tin sản phẩm
+- Xóa mềm sản phẩm bằng trạng thái `status`
+- Khôi phục sản phẩm đã xóa mềm
+- Quản lý tài khoản người dùng
+- Khóa tài khoản người dùng
+- Quản lý đơn hàng
+- Cập nhật trạng thái đơn hàng
 
----
+## Cấu trúc dự án
 
-## 🧱 Cấu trúc project
+```text
+Shoppee_Store/
+├─ src/java/
+│  ├─ controller/
+│  │  ├─ auth/             # Servlet xử lý đăng nhập, đăng ký, đăng xuất
+│  │  ├─ user/             # Servlet xử lý trang người dùng
+│  │  └─ admin/            # Servlet xử lý trang quản trị
+│  ├─ service/             # Tầng xử lý nghiệp vụ, chuẩn bị cho mở rộng
+│  ├─ dal/                 # DAO và kết nối database bằng JDBC
+│  ├─ model/               # Entity/model: User, Product, Order, Category...
+│  ├─ dto/                 # Object trung gian giữa tầng xử lý và view/API
+│  ├─ filter/              # Filter đăng nhập, phân quyền
+│  ├─ util/                # Tiện ích dùng chung
+│  └─ constant/            # Hằng số dùng chung
+│
+├─ web/
+│  ├─ view/
+│  │  ├─ auth/             # login.jsp, register.jsp
+│  │  ├─ user/             # home, category, product detail, cart, purchase
+│  │  ├─ admin/            # giao diện quản trị
+│  │  └─ common/           # header, nav, footer
+│  ├─ assets/              # CSS, ảnh, font, icon
+│  ├─ script/              # JavaScript
+│  └─ WEB-INF/             # web.xml, cấu hình database
+│
+├─ lib/                    # Thư viện jar
+├─ nbproject/              # Cấu hình NetBeans
+├─ images/                 # Ảnh minh họa README
+├─ build.xml               # Ant build file
+└─ Shoppe_DB.sql           # Script tạo database và dữ liệu mẫu
+```
 
-### 📂 Web Pages
+## Một số route chính
 
-* `assets/` → CSS, JS, hình ảnh
-* `view/`
+| Route | Chức năng |
+| --- | --- |
+| `/home` | Trang chủ |
+| `/authen?action=login` | Trang đăng nhập |
+| `/authen?action=register` | Trang đăng ký |
+| `/category` | Tìm kiếm, lọc, sắp xếp sản phẩm |
+| `/product-detail?id={id}` | Chi tiết sản phẩm |
+| `/cart?action=view` | Giỏ hàng |
+| `/cart?action=checkout` | Thanh toán |
+| `/user-purchase` | Đơn mua của người dùng |
+| `/admin-dashboard` | Dashboard admin |
+| `/admin-product?action=view` | Quản lý sản phẩm |
+| `/admin-account?action=view` | Quản lý tài khoản |
+| `/admin-order?action=view` | Quản lý đơn hàng |
 
-  * `admin/` → trang admin
-  * `auth/` → login/register
-  * `user/` → trang chính và chức năng user
-  * `common/` → header, footer
-* `index.html`, `newjsp.jsp` -> test Database
+## Database
 
----
+Dự án sử dụng SQL Server. File database mẫu nằm ở:
 
-### 📂 Source Packages
+```text
+Shoppe_DB.sql
+```
 
-* `controller/auth/` → xử lý đăng nhập/đăng ký
-* `controller/user/` → xử lý request user
-* `controller/admin/` → xử lý admin
-* `service/` → xử lý nghiệp vụ
-* `dal/` → kết nối database (JDBC)
-* `model/` → object (Product, User,...)
-* `dto/` → object trung gian giữa tầng xử lý và giao diện/API
-* `filter/` → filter (login, auth,...)
-* `util/` → tiện ích dùng chung
-* `constant/` → hằng số
+Các bảng chính:
 
----
+- `User`: thông tin tài khoản người dùng
+- `Role`: vai trò tài khoản, ví dụ admin/user
+- `Category`: danh mục sản phẩm
+- `Product`: thông tin sản phẩm
+- `ProductImage`: ảnh phụ của sản phẩm
+- `Order`: đơn hàng
+- `OrderDetail`: chi tiết đơn hàng
 
-## ⚙️ Công nghệ sử dụng
+Tài khoản mẫu trong script database:
 
-* Java Servlet + JSP
-* JSTL
-* JDBC
-* MySQL
-* Apache Tomcat
+```text
+Admin:
+username: admin
+password: 1
+```
 
----
+## Cấu hình database
 
-## 🚀 Hướng dẫn chạy project
+Sửa file:
 
-### 1. Clone project từ GitHub
+```text
+web/WEB-INF/ConnectDB.properties
+```
+
+Ví dụ:
+
+```properties
+url=jdbc:sqlserver://localhost:1433;databaseName=Shopee;trustServerCertificate=true
+userID=sa
+password=123
+```
+
+Lưu ý: thông tin `userID` và `password` cần đổi theo SQL Server trên máy của bạn.
+
+## Hướng dẫn chạy dự án
+
+### 1. Clone hoặc tải project
 
 ```bash
-git clone https://github.com/your-username/Shoppe_Store.git
+git clone <repository-url>
 ```
 
----
+### 2. Mở project bằng NetBeans
 
-### 2. Import vào NetBeans
+- Mở Apache NetBeans
+- Chọn `File` -> `Open Project`
+- Chọn thư mục `Shoppee_Store`
 
-* File → Open Project
-* Chọn folder project
+### 3. Tạo database
 
----
+- Mở SQL Server Management Studio hoặc công cụ tương đương
+- Chạy file `Shoppe_DB.sql`
+- Kiểm tra database `Shopee` đã được tạo
 
-### 3. Cấu hình database
+### 4. Cấu hình kết nối database
 
-#### Thiết lập DB:
+- Mở `web/WEB-INF/ConnectDB.properties`
+- Sửa `url`, `userID`, `password` cho đúng môi trường máy bạn
 
-* Chạy file 'Shoppe_DB.sql'
+### 5. Cấu hình server
 
-#### Sửa file:
+- Sử dụng Apache Tomcat 10.1
+- Đảm bảo project đang dùng JDK phù hợp với cấu hình NetBeans
+- Các thư viện cần thiết đã nằm trong thư mục `lib/`
 
-```
-ConnectDB.properties
-```
+### 6. Chạy project
 
-```java
-url=jdbc:sqlserver://localhost:1433;databaseName=Shopee;trustServerCertificate=true
-userID= 'Your userID'
-password= 'Your password'
-```
+Chạy project trong NetBeans, sau đó truy cập:
 
----
-
-### 4. Chạy project
-
-* Deploy bằng Tomcat
-* Truy cập: (lưu ý số cổng do mình config trong Tomcat)
-
-```
-http://localhost:(your_port)/Shoppe_Store
+```text
+http://localhost:<port>/Shoppee_Store/home
 ```
 
----
+Ví dụ:
 
-## 📷 Demo
-Giao diện trang home. Dùng được chức năng danh mục, gợi ý sản phẩm và phân trang
-* ![home](images/home.png)
-* ![home](images/home-1.png)
-* ![home](images/home-2.png)
-* ![home](images/home-3.png)
+```text
+http://localhost:8080/Shoppee_Store/home
+```
 
-Đăng nhập & Đăng ký
-* ![login](images/login.png)
-* ![login](images/register.png)
+## Thư viện trong `lib/`
 
-Chi tiết sản phẩm
-* ![product](images/product.png)
-* ![product](images/product-1.png)
+- `jakarta.servlet.jsp.jstl-2.0.0.jar`
+- `jakarta.servlet.jsp.jstl-api-2.0.0.jar`
+- `jaxb-api-2.1.jar`
+- `mssql-jdbc-13.2.0.jre11.jar`
+- `sqljdbc42.jar`
 
-Danh mục cho từng loại sản phẩm
-* ![cate](images/cate.png)
+## Gợi ý cải thiện tiếp theo
 
-Quản lý - Admin
-* ![admin](images/admin-1.png)
-* ![admin](images/admin-2.png)
-* ![admin](images/admin-3.png)
+- Đồng bộ lại schema `Order` và `OrderDetail` với `OrderDAO`
+- Sửa `AdminFilter` từ `@WebServlet` sang `@WebFilter`
+- Chuẩn hóa phân quyền admin theo `SESSION_USER`
+- Tách nghiệp vụ giỏ hàng và đơn hàng sang tầng `service`
+- Validate số lượng mua ở server, không chỉ ở giao diện
+- Hash mật khẩu thay vì lưu plain text
+- Không commit thông tin database thật lên repository
+- Cân nhắc thêm Google OAuth hoặc JWT nếu phát triển API/mobile
 
-User - Người dùng 
-* ![user](images/user.png)
+## Demo giao diện
 
-Cart - Giỏ Hàng
-    * ![cart](images/cart.png)
-    * ![cart](images/cart-1.png)
-    * ![cart](images/cart-2.png)
+Trang chủ:
 
-## ❗Thông tin thêm
+![home](images/home.png)
+![home](images/home-1.png)
+![home](images/home-2.png)
+![home](images/home-3.png)
 
-* Dự án thuộc khuôn khổ môn học PRJ301 thuộc trường đại học FPT Hà Nội
-* Sử dụng:
-  * Apache NetBeans IDE 17
-  * Apache Tomcat 10.1
-  * JDK 17
-  * SQL Server
-  * Thư viện:
-    * jakarta.servlet.jsp.jstl-2.0.0.jar
-    * jakarta.servlet.jsp.jstl-api-2.0.0.jar
-    * jaxb-api-2.1.jar
-    * mssql-jdbc-13.2.0.jre11.jar
-    * sqljdbc42.jar
+Đăng nhập và đăng ký:
 
----
+![login](images/login.png)
+![register](images/register.png)
 
-## 👨‍💻 Tác giả
+Chi tiết sản phẩm:
 
-* Nguyễn Quang Minh
+![product](images/product.png)
+![product](images/product-1.png)
+
+Danh mục sản phẩm:
+
+![cate](images/cate.png)
+
+Admin:
+
+![admin](images/admin-1.png)
+![admin](images/admin-2.png)
+![admin](images/admin-3.png)
+
+User:
+
+![user](images/user.png)
+
+Giỏ hàng:
+
+![cart](images/cart.png)
+![cart](images/cart-1.png)
+![cart](images/cart-2.png)
+
+## Tác giả
+
+Nguyễn Quang Minh
+
