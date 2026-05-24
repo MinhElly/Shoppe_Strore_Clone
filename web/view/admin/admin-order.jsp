@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản Lý Đơn Mua - Admin Shopee</title>
+    <title>Quản Lý Đơn Mua - Staff Shopee</title>
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/shopee-logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
     
@@ -38,7 +38,7 @@
                         <div class="admin-sidebar__user">
                             <img src="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" alt="Avatar" class="admin-sidebar__user-avatar">
                             <div class="admin-sidebar__user-info">
-                                <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Admin Quản Trị'}</div>
+                                <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Nhân viên bán hàng'}</div>
                                 
                             </div>
                         </div>

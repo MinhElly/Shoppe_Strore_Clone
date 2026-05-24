@@ -5,6 +5,7 @@
 
 package controller.auth;
 
+import constant.Constant;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -105,7 +106,8 @@ public class AuthenticationController extends HttpServlet {
         User user = udao.loginUser(username, password);
         if(user != null){
             HttpSession session = request.getSession();
-            session.setAttribute(constant.Constant.SESSION_USER, user);
+            user.setPassword(null);
+            session.setAttribute(Constant.SESSION_USER, user);
             url = "home";
         }else{
             url="view/auth/login.jsp";
@@ -117,7 +119,7 @@ public class AuthenticationController extends HttpServlet {
     
     private String logOut(HttpServletRequest request, HttpServletResponse response){
         HttpSession session = request.getSession();
-        session.removeAttribute(constant.Constant.SESSION_USER);
+        session.removeAttribute(Constant.SESSION_USER);
         return "home";
     }
     
@@ -142,13 +144,14 @@ public class AuthenticationController extends HttpServlet {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-        user.setRoleID(2);     // user bình thường
+        user.setRoleID(Constant.ROLE_CUSTOMER);
         user.setActivate(true);
         int result = udao.insertUser(user);   // ⭐ lưu DB
 
         if(result > 0){                       // ⭐ insert thành công
             HttpSession session = request.getSession();
-            session.setAttribute(constant.Constant.SESSION_USER, user); // lưu session
+            user.setPassword(null);
+            session.setAttribute(Constant.SESSION_USER, user);
             return "home";
         }else{
             request.setAttribute("error", "Đăng ký thất bại");

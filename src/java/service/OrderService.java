@@ -1,5 +1,6 @@
 package service;
 
+import constant.Constant;
 import dal.OrderDAO;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,6 +18,9 @@ public class OrderService {
         }
         if (!user.isActivate()) {
             throw new IllegalArgumentException("Your account is locked.");
+        }
+        if (!Constant.isCustomer(user)) {
+            throw new IllegalArgumentException("Only customer accounts can checkout.");
         }
 
         List<Item> checkoutItems = cartService.prepareCheckoutItems(cart, selectedProducts, quantities);

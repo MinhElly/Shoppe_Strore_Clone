@@ -2,7 +2,7 @@
 
 Shoppee_Store là website bán hàng mô phỏng giao diện và một số luồng nghiệp vụ cơ bản của Shopee. Dự án được xây dựng theo mô hình MVC với Java Servlet, JSP, JSTL, JDBC và SQL Server.
 
-Dự án phù hợp cho bài thực hành Java Web/PRJ301: người dùng có thể xem sản phẩm, tìm kiếm, thêm vào giỏ hàng và đặt mua; admin có thể quản lý sản phẩm, tài khoản và đơn hàng.
+Dự án phù hợp cho bài thực hành Java Web/PRJ301: guest có thể xem sản phẩm, customer có thể mua hàng, staff có thể quản lý sản phẩm, tài khoản và đơn hàng.
 
 ## Công nghệ sử dụng
 
@@ -18,31 +18,34 @@ Dự án phù hợp cho bài thực hành Java Web/PRJ301: người dùng có th
 
 ## Chức năng chính
 
-### Người dùng
+### Guest
 
-- Đăng ký tài khoản
-- Đăng nhập/đăng xuất
 - Xem danh sách sản phẩm
 - Xem sản phẩm theo danh mục
 - Tìm kiếm sản phẩm
 - Lọc sản phẩm theo khoảng giá
 - Sắp xếp sản phẩm theo mới nhất, bán chạy, giá tăng/giảm
 - Xem chi tiết sản phẩm
+
+### Customer
+
+- Đăng ký tài khoản
+- Đăng nhập/đăng xuất
 - Thêm sản phẩm vào giỏ hàng
 - Xem, chọn, cập nhật số lượng và xóa sản phẩm trong giỏ hàng
 - Thanh toán các sản phẩm đã chọn
 - Xem danh sách đơn mua
 
-### Admin
+### Staff
 
-- Xem trang dashboard
+- Xem dashboard quản lý cửa hàng
 - Quản lý sản phẩm
 - Thêm sản phẩm mới
 - Cập nhật thông tin sản phẩm
 - Xóa mềm sản phẩm bằng trạng thái `status`
 - Khôi phục sản phẩm đã xóa mềm
-- Quản lý tài khoản người dùng
-- Khóa tài khoản người dùng
+- Quản lý tài khoản customer
+- Khóa tài khoản customer
 - Quản lý đơn hàng
 - Cập nhật trạng thái đơn hàng
 
@@ -53,8 +56,8 @@ Shoppee_Store/
 ├─ src/java/
 │  ├─ controller/
 │  │  ├─ auth/             # Servlet xử lý đăng nhập, đăng ký, đăng xuất
-│  │  ├─ user/             # Servlet xử lý trang người dùng
-│  │  └─ admin/            # Servlet xử lý trang quản trị
+│  │  ├─ user/             # Servlet xử lý luồng customer/guest
+│  │  └─ admin/            # Servlet xử lý khu vực staff
 │  ├─ service/             # Tầng xử lý nghiệp vụ: giỏ hàng, đặt hàng
 │  ├─ dal/                 # DAO và kết nối database bằng JDBC
 │  ├─ model/               # Entity/model: User, Product, Order, Category...
@@ -67,7 +70,7 @@ Shoppee_Store/
 │  ├─ view/
 │  │  ├─ auth/             # login.jsp, register.jsp
 │  │  ├─ user/             # home, category, product detail, cart, purchase
-│  │  ├─ admin/            # giao diện quản trị
+│  │  ├─ admin/            # giao diện staff
 │  │  └─ common/           # header, nav, footer
 │  ├─ assets/              # CSS, ảnh, font, icon
 │  ├─ script/              # JavaScript
@@ -90,11 +93,11 @@ Shoppee_Store/
 | `/product-detail?id={id}` | Chi tiết sản phẩm |
 | `/cart?action=view` | Giỏ hàng |
 | `/cart?action=checkout` | Thanh toán |
-| `/user-purchase` | Đơn mua của người dùng |
-| `/admin-dashboard` | Dashboard admin |
-| `/admin-product?action=view` | Quản lý sản phẩm |
-| `/admin-account?action=view` | Quản lý tài khoản |
-| `/admin-order?action=view` | Quản lý đơn hàng |
+| `/user-purchase` | Đơn mua của customer |
+| `/admin-dashboard` | Dashboard staff |
+| `/admin-product?action=view` | Staff quản lý sản phẩm |
+| `/admin-account?action=view` | Staff quản lý tài khoản |
+| `/admin-order?action=view` | Staff quản lý đơn hàng |
 
 ## Database
 
@@ -106,8 +109,8 @@ Shoppe_DB.sql
 
 Các bảng chính:
 
-- `User`: thông tin tài khoản người dùng
-- `Role`: vai trò tài khoản, ví dụ admin/user
+- `User`: thông tin tài khoản customer/staff
+- `Role`: vai trò tài khoản, hiện có `staff` và `customer`
 - `Category`: danh mục sản phẩm
 - `Product`: thông tin sản phẩm
 - `ProductImage`: ảnh phụ của sản phẩm
@@ -117,9 +120,13 @@ Các bảng chính:
 Tài khoản mẫu trong script database:
 
 ```text
-Admin:
-username: admin
+Staff:
+username: staff
 password: 1
+
+Customer:
+username: user3
+password: Minh071006@
 ```
 
 ## Cấu hình database
@@ -204,9 +211,11 @@ http://localhost:8080/Shoppee_Store/home
 Đã xử lý trong code hiện tại:
 
 - Schema `Order` và `OrderDetail` đã đồng bộ với `OrderDAO`
-- `AdminFilter` dùng `@WebFilter` và kiểm tra quyền qua `SESSION_USER`
+- Role được chuẩn hóa thành `guest`, `customer`, `staff`
+- `StaffFilter` dùng `@WebFilter` và kiểm tra quyền qua `SESSION_USER`
 - Nghiệp vụ giỏ hàng và đặt hàng được tách sang tầng `service`
 - Checkout validate số lượng ở server trước khi tạo đơn
+- Chỉ tài khoản `customer` được checkout và xem lịch sử mua hàng
 - Tạo đơn hàng và trừ tồn kho chạy trong transaction
 - Mật khẩu mới được hash bằng PBKDF2 trước khi lưu
 - File cấu hình database dùng placeholder, không để thông tin thật trong repository
@@ -216,7 +225,7 @@ Nên cân nhắc tiếp nếu mở rộng dự án:
 - Thêm Google OAuth cho luồng đăng nhập web
 - Thêm JWT nếu phát triển API cho mobile hoặc frontend tách riêng
 - Viết migration để chuyển mật khẩu plain text cũ trong database đang chạy sang hash
-- Bổ sung test cho checkout, phân quyền admin và đăng nhập
+- Bổ sung test cho checkout, phân quyền staff/customer và đăng nhập
 
 ## Tác giả
 

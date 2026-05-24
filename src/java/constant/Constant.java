@@ -10,10 +10,20 @@ package constant;
  */
 public class Constant {
     public static final int RECORD_PER_PAGE = 24;
+    public static final int ROLE_GUEST = 0;
+    public static final int ROLE_STAFF = 1;
+    public static final int ROLE_CUSTOMER = 2;
     public static final String SESSION_PRODUCT = "listProduct";
     public static final String SESSION_CATEGORY = "listCategory";
     public static final String SESSION_PRODUCT_ADMIN = "listAdminProduct";
     public static final String SESSION_CATEGORY_ADMIN = "listAdminCategory";
     public static final String SESSION_USER = "user";
-    
+
+    public static boolean isStaff(model.User user) {
+        return user != null && user.isActivate() && user.getRoleID() == ROLE_STAFF;
+    }
+
+    public static boolean isCustomer(model.User user) {
+        return user != null && user.isActivate() && user.getRoleID() == ROLE_CUSTOMER;
+    }
 }

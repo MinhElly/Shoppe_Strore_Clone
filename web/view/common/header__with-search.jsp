@@ -64,6 +64,7 @@
     </div>
     <!-- end: header search suggest -->
 
+    <c:if test="${sessionScope.SESSION_USER == null || sessionScope.SESSION_USER.roleID == 2}">
     <!-- start: header cart -->
     <div class="header__cart">
     <div class="header__cart-wrap" id="cartToggle">
@@ -126,6 +127,5 @@
     </div>
 </div>
     <!-- end: header cart -->
+    </c:if>
 </div>
-             
-        

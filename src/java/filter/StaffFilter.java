@@ -14,13 +14,13 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import model.User;
 
-@WebFilter(filterName = "AdminFilter", urlPatterns = {
+@WebFilter(filterName = "StaffFilter", urlPatterns = {
     "/admin-dashboard",
     "/admin-product",
     "/admin-account",
     "/admin-order"
 })
-public class AdminFilter implements Filter {
+public class StaffFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,7 +40,7 @@ public class AdminFilter implements Filter {
             return;
         }
 
-        if (user.getRoleID() != 1 || !user.isActivate()) {
+        if (!Constant.isStaff(user)) {
             res.sendRedirect(req.getContextPath() + "/home?error=access_denied");
             return;
         }

@@ -7,7 +7,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Quản Lý Tài Khoản - Admin Shopee</title>
+        <title>Quản Lý Tài Khoản - Staff Shopee</title>
         <link rel="icon" href="${pageContext.request.contextPath}/assets/img/shopee-logo.png" type="image/x-icon" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
 
@@ -37,7 +37,7 @@
                                 <div class="admin-sidebar__user">
                                     <img src="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" alt="Avatar" class="admin-sidebar__user-avatar">
                                 <div class="admin-sidebar__user-info">
-                                    <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Admin Quản Trị'}</div>
+                                    <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Nhân viên bán hàng'}</div>
                                    
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
 
                             <div class="admin-data-card">
                                 <div class="admin-data-card__header">
-                                    <i class="fa-solid fa-users-gear"></i> Danh Sách Tài Khoản Người Dùng
+                                    <i class="fa-solid fa-users-gear"></i> Danh Sách Tài Khoản
                                 </div>
 
                                 <div class="table-controls">
@@ -111,8 +111,8 @@
                                                 <td>${acc.email}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${acc.roleID == 1}"><span style="color: #d0011b; font-weight: bold;">1 (Admin)</span></c:when>
-                                                        <c:otherwise>2 (User)</c:otherwise>
+                                                        <c:when test="${acc.roleID == 1}"><span style="color: #d0011b; font-weight: bold;">1 (Staff)</span></c:when>
+                                                        <c:otherwise>2 (Customer)</c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <td style="text-align: center;">

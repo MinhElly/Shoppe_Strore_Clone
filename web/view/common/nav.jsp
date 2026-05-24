@@ -13,11 +13,17 @@
         <li class="header__navbar-item header__navbar-item-separate">
             Kênh người bán
         </li>
-        <a
-            href="#"
-            class="header__navbar-item header__navbar-item-separate"
-            >Trở thành người bán Shopee</a
-        >
+        <c:choose>
+            <c:when test="${sessionScope[Constant.SESSION_USER] != null && sessionScope[Constant.SESSION_USER].roleID == 1}">
+                <a href="admin-dashboard" class="header__navbar-item header__navbar-item-separate">Vào trang staff</a>
+            </c:when>
+            <c:when test="${sessionScope[Constant.SESSION_USER] != null && sessionScope[Constant.SESSION_USER].roleID == 2}">
+                <a href="#" class="header__navbar-item header__navbar-item-separate">Trở thành người bán</a>
+            </c:when>
+            <c:otherwise>
+                <a href="authen?action=login" class="header__navbar-item header__navbar-item-separate">Đăng nhập staff</a>
+            </c:otherwise>
+        </c:choose>
         <li
             class="header__navbar-item header__navbar-item--has-qr header__navbar-item-separate"
             >
@@ -164,7 +170,7 @@
                             <c:if test="${sessionScope[Constant.SESSION_USER].roleID == 1}">
                                 <li>
                                     <a href="admin-dashboard" style="color:red;font-weight:bold;">
-                                        Quản Lý Hệ Thống
+                                        Quản Lý Cửa Hàng
                                     </a>
                                 </li>
                             </c:if>

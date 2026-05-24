@@ -74,6 +74,11 @@ public class CartController extends HttpServlet {
                         response.sendRedirect("authen?action=login");
                         return;
                     }
+                    if (!Constant.isCustomer(user)) {
+                        request.setAttribute("error", "Only customer accounts can checkout.");
+                        request.getRequestDispatcher("/view/user/cart.jsp").forward(request, response);
+                        return;
+                    }
 
                     orderService.checkout(
                             user,

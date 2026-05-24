@@ -5,6 +5,7 @@
 
 package controller.user;
 
+import constant.Constant;
 import dal.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,16 +62,18 @@ public class PurchaseController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(constant.Constant.SESSION_USER);
+        User user = (User) session.getAttribute(Constant.SESSION_USER);
 
-        // Kiểm tra nếu chưa đăng nhập thì bắt về trang login
         if (user == null) {
             response.sendRedirect("authen?action=login");
             return;
         }
+        if (!Constant.isCustomer(user)) {
+            response.sendRedirect("home?error=access_denied");
+            return;
+        }
 
         OrderDAO odao = new OrderDAO();
-        // Lấy danh sách đơn hàng của User
         List<Order> list = odao.getOrdersByUserId(user.getUserID());
         
         request.setAttribute("listPurchase", list);
