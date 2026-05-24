@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.user;
 
 import dal.OrderDAO;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class PurchaseController extends HttpServlet {
 
         // Kiểm tra nếu chưa đăng nhập thì bắt về trang login
         if (user == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("authen?action=login");
             return;
         }
 
@@ -74,7 +74,7 @@ public class PurchaseController extends HttpServlet {
         List<Order> list = odao.getOrdersByUserId(user.getUserID());
         
         request.setAttribute("listPurchase", list);
-        request.getRequestDispatcher("/view/homepage/purchase.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/user/purchase.jsp").forward(request, response);
     } 
 
     /** 

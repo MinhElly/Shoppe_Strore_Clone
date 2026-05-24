@@ -35,9 +35,8 @@ Project hỗ trợ người dùng mua sắm online và admin quản lý sản ph
 * `view/`
 
   * `admin/` → trang admin
-  * `authentication/` → login/register
-  * `homepage/` → trang chính
-  * `user/` → chức năng user
+  * `auth/` → login/register
+  * `user/` → trang chính và chức năng user
   * `common/` → header, footer
 * `index.html`, `newjsp.jsp` -> test Database
 
@@ -45,11 +44,15 @@ Project hỗ trợ người dùng mua sắm online và admin quản lý sản ph
 
 ### 📂 Source Packages
 
-* `controller/` → xử lý request user
-* `controller.admin/` → xử lý admin
+* `controller/auth/` → xử lý đăng nhập/đăng ký
+* `controller/user/` → xử lý request user
+* `controller/admin/` → xử lý admin
+* `service/` → xử lý nghiệp vụ
 * `dal/` → kết nối database (JDBC)
 * `model/` → object (Product, User,...)
+* `dto/` → object trung gian giữa tầng xử lý và giao diện/API
 * `filter/` → filter (login, auth,...)
+* `util/` → tiện ích dùng chung
 * `constant/` → hằng số
 
 ---

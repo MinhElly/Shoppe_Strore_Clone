@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.auth;
 
 import dal.UserDAO;
 import java.io.IOException;
@@ -49,13 +49,13 @@ public class AuthenticationController extends HttpServlet {
         String url;
         switch (action) {
             case "login":
-                url = "view/authentication/login.jsp";
+                url = "view/auth/login.jsp";
                 break;
             case "logout":
                 url = logOut(request, response);
                 break;
             case "register":
-                url = "view/authentication/register.jsp";
+                url = "view/auth/register.jsp";
                 break;
             default:
                 url = "home";
@@ -106,7 +106,7 @@ public class AuthenticationController extends HttpServlet {
             session.setAttribute(constant.Constant.SESSION_USER, udao.loginUser(username, password));
             url = "home";
         }else{
-            url="view/authentication/login.jsp";
+            url="view/auth/login.jsp";
             request.setAttribute("error", "Tài khoản hoặc Mật khẩu không đúng!");
         }
         return url;
@@ -128,11 +128,11 @@ public class AuthenticationController extends HttpServlet {
         String userID = udao.generateUserID();
         if(udao.isExistUserName(username)){
             request.setAttribute("error", "Tài khoàn đã tồn tại");
-            return "view/authentication/register.jsp";
+            return "view/auth/register.jsp";
         }
         if (!password.equalsIgnoreCase(confirmPassword)) {
             request.setAttribute("error", "Mật khẩu không khớp. Vui lòng thử lại");
-            return "view/authentication/register.jsp";
+            return "view/auth/register.jsp";
         }
         User user = new User();
         user.setUserID(userID);
@@ -150,7 +150,7 @@ public class AuthenticationController extends HttpServlet {
             return "home";
         }else{
             request.setAttribute("error", "Đăng ký thất bại");
-            return "view/authentication/register.jsp";
+            return "view/auth/register.jsp";
         }
     }
 }

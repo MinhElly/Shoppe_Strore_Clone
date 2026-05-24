@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.user;
 
 import dal.ProductDAO;
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class CategoryController extends HttpServlet {
     request.setAttribute("minPrice", minPriceRaw); // Giữ số trong ô input Từ
     request.setAttribute("maxPrice", maxPriceRaw); // Giữ số trong ô input Đến
 
-    request.getRequestDispatcher("/view/homepage/cate-detail.jsp").forward(request, response);
+    request.getRequestDispatcher("/view/user/cate-detail.jsp").forward(request, response);
     }
 
     /** 

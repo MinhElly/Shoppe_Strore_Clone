@@ -1,4 +1,4 @@
-package controller;
+package controller.user;
 
 import dal.OrderDAO;
 import dal.ProductDAO;
@@ -101,7 +101,7 @@ public class CartController extends HttpServlet {
 
             // 3. HIỂN THỊ GIỎ HÀNG
         } else if ("view".equals(action)) {
-            request.getRequestDispatcher("/view/user/cart/cart.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/user/cart.jsp").forward(request, response);
             // 4. XỬ LÝ THANH TOÁN (MUA HÀNG)
         // 4. XỬ LÝ THANH TOÁN (MUA HÀNG)
         } else if ("checkout".equals(action)) {

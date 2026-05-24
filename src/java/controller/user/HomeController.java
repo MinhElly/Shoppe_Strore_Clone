@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.user;
 
 import dal.CategoryDAO;
 import dal.ProductDAO;
@@ -52,7 +52,7 @@ public class HomeController extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute(constant.Constant.SESSION_PRODUCT, listProduct);
         session.setAttribute(constant.Constant.SESSION_CATEGORY, listCategory);
-        request.getRequestDispatcher("view/homepage/home.jsp").forward(request, response);
+        request.getRequestDispatcher("view/user/home.jsp").forward(request, response);
     } 
 
    

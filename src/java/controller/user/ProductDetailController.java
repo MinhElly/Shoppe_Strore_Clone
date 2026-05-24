@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.user;
 
 import dal.ProductDAO;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class ProductDetailController extends HttpServlet {
             // request.setAttribute("extraImages", extraImages);
             
             // 4. Forward sang trang product-detail.jsp
-            request.getRequestDispatcher("view/homepage/product-detail.jsp").forward(request, response);
+            request.getRequestDispatcher("view/user/product-detail.jsp").forward(request, response);
             
         } catch (NumberFormatException e) {
             // Xử lý lỗi nếu id truyền vào không phải là số
