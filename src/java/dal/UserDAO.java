@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import model.User;
+import util.PasswordUtil;
 
 public class UserDAO extends DBContext {
 
@@ -86,7 +87,7 @@ public class UserDAO extends DBContext {
             ps.setString(1, u.getUserID());
             ps.setString(2, u.getFullName());
             ps.setString(3, u.getUsername());
-            ps.setString(4, u.getPassword());
+            ps.setString(4, securePassword(u.getPassword()));
             ps.setInt(5, u.getRoleID());
             ps.setString(6, u.getAddress());
             ps.setString(7, u.getPhone());
@@ -115,7 +116,7 @@ public class UserDAO extends DBContext {
 
             ps.setString(1, u.getFullName());
             ps.setString(2, u.getUsername());
-            ps.setString(3, u.getPassword());
+            ps.setString(3, securePassword(u.getPassword()));
             ps.setInt(4, u.getRoleID());
             ps.setString(5, u.getAddress());
             ps.setString(6, u.getPhone());
@@ -176,24 +177,26 @@ public class UserDAO extends DBContext {
     public User loginUser(String username, String password) {
 
         String sql = "SELECT * FROM [User] "
-                + "WHERE username = ? AND password = ?";
+                + "WHERE username = ? AND activate = 1";
 
         try {
 
             ps = connection.prepareStatement(sql);
 
             ps.setString(1, username);
-            ps.setString(2, password);
-
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                String storedPassword = rs.getString("password");
+                if (!PasswordUtil.verifyPassword(password, storedPassword)) {
+                    return null;
+                }
 
                 return new User(
                         rs.getString("userID"),
                         rs.getString("fullName"),
                         rs.getString("username"),
-                        rs.getString("password"),
+                        storedPassword,
                         rs.getInt("roleID"),
                         rs.getString("address"),
                         rs.getString("phone"),
@@ -304,6 +307,13 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private String securePassword(String password) {
+        if (PasswordUtil.isHashedPassword(password)) {
+            return password;
+        }
+        return PasswordUtil.hashPassword(password);
     }
 
 }

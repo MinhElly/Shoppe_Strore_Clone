@@ -359,12 +359,15 @@ public class ProductDAO extends GenericDAO<Product> {
     }
 
     public void updateStockAfterCheckout(int productId, int buyQuantity) {
-        String sql = "UPDATE [dbo].[Product] SET [quantity] = [quantity] - ?, [soldQuantity] = [soldQuantity] + ? WHERE [productID] = ?";
+        String sql = "UPDATE [dbo].[Product] "
+                + "SET [quantity] = [quantity] - ?, [soldQuantity] = [soldQuantity] + ? "
+                + "WHERE [productID] = ? AND [quantity] >= ? AND [status] = 1";
         try {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, buyQuantity);
             statement.setInt(2, buyQuantity);
             statement.setInt(3, productId);
+            statement.setInt(4, buyQuantity);
             statement.executeUpdate();
         } catch (Exception e) {
             System.out.println("Lỗi updateStockAfterCheckout: " + e.getMessage());

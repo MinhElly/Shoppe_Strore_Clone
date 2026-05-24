@@ -20,3 +20,4 @@ Thumbs.db
 
 # SECRET
 .env
+/web/WEB-INF/ConnectDB.properties

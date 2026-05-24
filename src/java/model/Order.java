@@ -3,10 +3,10 @@ package model;
 import java.util.Date;
 
 public class Order {
-    private int id;         // Khớp với orderID của bạn
-    private Date date;       // Khớp với orderDate
-    private double totalMoney; // Khớp với total
-    private String userId;   // Khớp với userID
+    private int id;
+    private Date date;
+    private double totalMoney;
+    private String userId;
     private String status;   // Trạng thái đơn hàng (Chờ xác nhận, Đang giao...)
     
     // THUỘC TÍNH THÊM VÀO ĐỂ HIỂN THỊ TRÊN GIAO DIỆN

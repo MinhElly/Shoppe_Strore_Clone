@@ -1,106 +1,159 @@
 package dal;
 
-import model.Order;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Item;
+import model.Order;
 
 public class OrderDAO extends DBContext {
-    PreparedStatement ps;
-    ResultSet rs;
 
-    // Lấy toàn bộ danh sách đơn hàng cho Admin
     public List<Order> getAllOrdersAdmin() {
         List<Order> list = new ArrayList<>();
-        // Câu lệnh SQL lấy thông tin đơn hàng và tên người mua
-        String sql = "SELECT o.id, o.date, o.totalMoney, o.status, u.userID, u.fullName " +
-                     "FROM [Order] o JOIN [User] u ON o.userId = u.userID " +
-                     "ORDER BY o.date DESC";
-        try {
-            ps = connection.prepareStatement(sql);
-            rs = ps.executeQuery();
+        String sql = "SELECT o.[id], o.[date], o.[totalMoney], o.[status], o.[userId], u.[fullName] "
+                + "FROM [dbo].[Order] o "
+                + "JOIN [dbo].[User] u ON o.[userId] = u.[userID] "
+                + "ORDER BY o.[date] DESC";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Order o = new Order();
-                o.setId(rs.getInt("id"));
-                o.setDate(rs.getDate("date"));
-                o.setTotalMoney(rs.getDouble("totalMoney"));
-                o.setStatus(rs.getString("status"));
-                o.setUserId(rs.getString("userID"));
-                o.setUserName(rs.getString("fullName")); // Tên hiển thị thay cho ID
-                list.add(o);
+                list.add(mapOrder(rs));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    // Cập nhật trạng thái đơn hàng (Ví dụ: Đang giao, Hoàn thành...)
-    public void updateOrderStatus(int orderId, String status) {
-        String sql = "UPDATE [Order] SET status = ? WHERE id = ?";
-        try {
-            ps = connection.prepareStatement(sql);
+    public boolean updateOrderStatus(int orderId, String status) {
+        String sql = "UPDATE [dbo].[Order] SET [status] = ? WHERE [id] = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setInt(2, orderId);
-            ps.executeUpdate();
-        } catch (Exception e) {
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
+
     public List<Order> getOrdersByUserId(String userID) {
-    List<Order> list = new ArrayList<>();
-    // Câu lệnh SQL lấy đơn hàng của riêng User này, sắp xếp đơn mới nhất lên đầu
-    String sql = "SELECT * FROM [Order] WHERE userId = ? ORDER BY date DESC";
-    try {
-        ps = connection.prepareStatement(sql);
-        ps.setString(1, userID);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            Order o = new Order();
-            o.setId(rs.getInt("id"));
-            o.setDate(rs.getDate("date"));
-            o.setTotalMoney(rs.getDouble("totalMoney"));
-            o.setStatus(rs.getString("status"));
-            o.setUserId(rs.getString("userId"));
-            list.add(o);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return list;
-}
-    public void insertOrder(String userId, double totalMoney, List<Item> boughtItems) {
-    try {
-        // 1. Tạo đơn hàng mới trong bảng Order
-        // Lưu ý: Sửa lại tên bảng và tên cột cho khớp với Database của bạn
-        String sqlOrder = "INSERT INTO [Order] (UserID, Date, TotalMoney, Status) VALUES (?, GETDATE(), ?, N'Chờ xác nhận')";
-        
-        // Dùng RETURN_GENERATED_KEYS để lấy ID đơn hàng tự tăng vừa tạo
-        PreparedStatement st = connection.prepareStatement(sqlOrder, PreparedStatement.RETURN_GENERATED_KEYS);
-        st.setString(1, userId);
-        st.setDouble(2, totalMoney);
-        st.executeUpdate();
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT [id], [date], [totalMoney], [status], [userId] "
+                + "FROM [dbo].[Order] "
+                + "WHERE [userId] = ? "
+                + "ORDER BY [date] DESC";
 
-        // 2. Lấy ra OrderID vừa được tạo
-        ResultSet rs = st.getGeneratedKeys();
-        if (rs.next()) {
-            int orderId = rs.getInt(1);
-
-            // 3. Lưu từng sản phẩm vào bảng OrderDetail
-            for (Item item : boughtItems) {
-                String sqlDetail = "INSERT INTO [OrderDetail] (OrderID, ProductID, Quantity, Price) VALUES (?, ?, ?, ?)";
-                PreparedStatement st2 = connection.prepareStatement(sqlDetail);
-                st2.setInt(1, orderId);
-                st2.setInt(2, item.getProduct().getProductID());
-                st2.setInt(3, item.getQuantity());
-                st2.setDouble(4, item.getProduct().getPrice());
-                st2.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, userID);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapOrder(rs));
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        System.out.println("Lỗi insertOrder: " + e.getMessage());
+        return list;
     }
+
+    public int createOrder(String userId, List<Item> boughtItems) throws SQLException {
+        if (boughtItems == null || boughtItems.isEmpty()) {
+            throw new SQLException("Order must have at least one item.");
+        }
+
+        boolean oldAutoCommit = connection.getAutoCommit();
+        String insertOrderSql = "INSERT INTO [dbo].[Order] ([userId], [date], [totalMoney], [status]) "
+                + "VALUES (?, GETDATE(), ?, ?)";
+        String insertDetailSql = "INSERT INTO [dbo].[OrderDetail] ([orderID], [productID], [quantity], [price]) "
+                + "VALUES (?, ?, ?, ?)";
+        String updateStockSql = "UPDATE [dbo].[Product] "
+                + "SET [quantity] = [quantity] - ?, [soldQuantity] = [soldQuantity] + ? "
+                + "WHERE [productID] = ? AND [quantity] >= ? AND [status] = 1";
+
+        try {
+            connection.setAutoCommit(false);
+
+            int orderId;
+            try (PreparedStatement orderStatement = connection.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
+                orderStatement.setString(1, userId);
+                orderStatement.setDouble(2, calculateTotal(boughtItems));
+                orderStatement.setString(3, "Chờ xác nhận");
+                orderStatement.executeUpdate();
+
+                try (ResultSet generatedKeys = orderStatement.getGeneratedKeys()) {
+                    if (!generatedKeys.next()) {
+                        throw new SQLException("Could not get generated order id.");
+                    }
+                    orderId = generatedKeys.getInt(1);
+                }
+            }
+
+            for (Item item : boughtItems) {
+                int productId = item.getProduct().getProductID();
+                int quantity = item.getQuantity();
+
+                try (PreparedStatement stockStatement = connection.prepareStatement(updateStockSql)) {
+                    stockStatement.setInt(1, quantity);
+                    stockStatement.setInt(2, quantity);
+                    stockStatement.setInt(3, productId);
+                    stockStatement.setInt(4, quantity);
+                    if (stockStatement.executeUpdate() == 0) {
+                        throw new SQLException("Product stock is not enough for product id " + productId);
+                    }
+                }
+
+                try (PreparedStatement detailStatement = connection.prepareStatement(insertDetailSql)) {
+                    detailStatement.setInt(1, orderId);
+                    detailStatement.setInt(2, productId);
+                    detailStatement.setInt(3, quantity);
+                    detailStatement.setDouble(4, item.getProduct().getPrice());
+                    detailStatement.executeUpdate();
+                }
+            }
+
+            connection.commit();
+            return orderId;
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(oldAutoCommit);
+        }
+    }
+
+    public void insertOrder(String userId, double totalMoney, List<Item> boughtItems) {
+        try {
+            createOrder(userId, boughtItems);
+        } catch (SQLException e) {
+            System.out.println("Error at OrderDAO.insertOrder(): " + e.getMessage());
+        }
+    }
+
+    private double calculateTotal(List<Item> items) {
+        double total = 0;
+        for (Item item : items) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
+        return total;
+    }
+
+    private Order mapOrder(ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setId(rs.getInt("id"));
+        order.setDate(rs.getTimestamp("date"));
+        order.setTotalMoney(rs.getDouble("totalMoney"));
+        order.setStatus(rs.getString("status"));
+        order.setUserId(rs.getString("userId"));
+        try {
+            order.setUserName(rs.getString("fullName"));
+        } catch (SQLException ignored) {
+            // fullName is only available in admin JOIN queries.
+        }
+        return order;
     }
 }

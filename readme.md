@@ -55,7 +55,7 @@ Shoppee_Store/
 │  │  ├─ auth/             # Servlet xử lý đăng nhập, đăng ký, đăng xuất
 │  │  ├─ user/             # Servlet xử lý trang người dùng
 │  │  └─ admin/            # Servlet xử lý trang quản trị
-│  ├─ service/             # Tầng xử lý nghiệp vụ, chuẩn bị cho mở rộng
+│  ├─ service/             # Tầng xử lý nghiệp vụ: giỏ hàng, đặt hàng
 │  ├─ dal/                 # DAO và kết nối database bằng JDBC
 │  ├─ model/               # Entity/model: User, Product, Order, Category...
 │  ├─ dto/                 # Object trung gian giữa tầng xử lý và view/API
@@ -124,21 +124,27 @@ password: 1
 
 ## Cấu hình database
 
-Sửa file:
+Không commit thông tin kết nối database thật lên repository. Dự án có file mẫu:
+
+```text
+web/WEB-INF/ConnectDB.example.properties
+```
+
+Tạo hoặc sửa file local:
 
 ```text
 web/WEB-INF/ConnectDB.properties
 ```
 
-Ví dụ:
+Nội dung tham khảo:
 
 ```properties
 url=jdbc:sqlserver://localhost:1433;databaseName=Shopee;trustServerCertificate=true
-userID=sa
-password=123
+userID=your_sql_server_user
+password=your_sql_server_password
 ```
 
-Lưu ý: thông tin `userID` và `password` cần đổi theo SQL Server trên máy của bạn.
+Lưu ý: `ConnectDB.properties` là cấu hình local. Trước khi commit, kiểm tra không đưa `userID` và `password` thật lên repository.
 
 ## Hướng dẫn chạy dự án
 
@@ -162,8 +168,8 @@ git clone <repository-url>
 
 ### 4. Cấu hình kết nối database
 
-- Mở `web/WEB-INF/ConnectDB.properties`
-- Sửa `url`, `userID`, `password` cho đúng môi trường máy bạn
+- Copy `web/WEB-INF/ConnectDB.example.properties` thành `web/WEB-INF/ConnectDB.properties` nếu file local chưa có
+- Sửa `url`, `userID`, `password` cho đúng SQL Server trên máy bạn
 
 ### 5. Cấu hình server
 
@@ -193,16 +199,24 @@ http://localhost:8080/Shoppee_Store/home
 - `mssql-jdbc-13.2.0.jre11.jar`
 - `sqljdbc42.jar`
 
-## Gợi ý cải thiện tiếp theo
+## Ghi chú bảo mật và nghiệp vụ
 
-- Đồng bộ lại schema `Order` và `OrderDetail` với `OrderDAO`
-- Sửa `AdminFilter` từ `@WebServlet` sang `@WebFilter`
-- Chuẩn hóa phân quyền admin theo `SESSION_USER`
-- Tách nghiệp vụ giỏ hàng và đơn hàng sang tầng `service`
-- Validate số lượng mua ở server, không chỉ ở giao diện
-- Hash mật khẩu thay vì lưu plain text
-- Không commit thông tin database thật lên repository
-- Cân nhắc thêm Google OAuth hoặc JWT nếu phát triển API/mobile
+Đã xử lý trong code hiện tại:
+
+- Schema `Order` và `OrderDetail` đã đồng bộ với `OrderDAO`
+- `AdminFilter` dùng `@WebFilter` và kiểm tra quyền qua `SESSION_USER`
+- Nghiệp vụ giỏ hàng và đặt hàng được tách sang tầng `service`
+- Checkout validate số lượng ở server trước khi tạo đơn
+- Tạo đơn hàng và trừ tồn kho chạy trong transaction
+- Mật khẩu mới được hash bằng PBKDF2 trước khi lưu
+- File cấu hình database dùng placeholder, không để thông tin thật trong repository
+
+Nên cân nhắc tiếp nếu mở rộng dự án:
+
+- Thêm Google OAuth cho luồng đăng nhập web
+- Thêm JWT nếu phát triển API cho mobile hoặc frontend tách riêng
+- Viết migration để chuyển mật khẩu plain text cũ trong database đang chạy sang hash
+- Bổ sung test cho checkout, phân quyền admin và đăng nhập
 
 ## Tác giả
 

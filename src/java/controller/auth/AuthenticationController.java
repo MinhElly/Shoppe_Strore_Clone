@@ -73,6 +73,7 @@ public class AuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         String url;
         switch (action) {
@@ -101,9 +102,10 @@ public class AuthenticationController extends HttpServlet {
         String url = null;
         String username = request.getParameter("username");
         String password= request.getParameter("password");
-        if(udao.loginUser(username, password) != null){
+        User user = udao.loginUser(username, password);
+        if(user != null){
             HttpSession session = request.getSession();
-            session.setAttribute(constant.Constant.SESSION_USER, udao.loginUser(username, password));
+            session.setAttribute(constant.Constant.SESSION_USER, user);
             url = "home";
         }else{
             url="view/auth/login.jsp";
@@ -130,7 +132,7 @@ public class AuthenticationController extends HttpServlet {
             request.setAttribute("error", "Tài khoàn đã tồn tại");
             return "view/auth/register.jsp";
         }
-        if (!password.equalsIgnoreCase(confirmPassword)) {
+        if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Mật khẩu không khớp. Vui lòng thử lại");
             return "view/auth/register.jsp";
         }

@@ -45,6 +45,11 @@
     <div id="container" class="cart-container">
         <div class="grid wide">
             <div class="cart-page">
+                <c:if test="${not empty error}">
+                    <div style="background:#fff4f2;color:#d0011b;border:1px solid #ffd1c8;padding:12px 16px;margin-bottom:16px;font-size:1.4rem;">
+                        ${error}
+                    </div>
+                </c:if>
                 
                 <c:choose>
                     <%-- TRƯỜNG HỢP 1: GIỎ HÀNG TRỐNG --%>
