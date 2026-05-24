@@ -75,7 +75,6 @@ Shoppee_Store/
 │
 ├─ lib/                    # Thư viện jar
 ├─ nbproject/              # Cấu hình NetBeans
-├─ images/                 # Ảnh minh họa README
 ├─ build.xml               # Ant build file
 └─ Shoppe_DB.sql           # Script tạo database và dữ liệu mẫu
 ```
@@ -205,46 +204,6 @@ http://localhost:8080/Shoppee_Store/home
 - Không commit thông tin database thật lên repository
 - Cân nhắc thêm Google OAuth hoặc JWT nếu phát triển API/mobile
 
-## Demo giao diện
-
-Trang chủ:
-
-![home](images/home.png)
-![home](images/home-1.png)
-![home](images/home-2.png)
-![home](images/home-3.png)
-
-Đăng nhập và đăng ký:
-
-![login](images/login.png)
-![register](images/register.png)
-
-Chi tiết sản phẩm:
-
-![product](images/product.png)
-![product](images/product-1.png)
-
-Danh mục sản phẩm:
-
-![cate](images/cate.png)
-
-Admin:
-
-![admin](images/admin-1.png)
-![admin](images/admin-2.png)
-![admin](images/admin-3.png)
-
-User:
-
-![user](images/user.png)
-
-Giỏ hàng:
-
-![cart](images/cart.png)
-![cart](images/cart-1.png)
-![cart](images/cart-2.png)
-
 ## Tác giả
 
 Nguyễn Quang Minh
-
