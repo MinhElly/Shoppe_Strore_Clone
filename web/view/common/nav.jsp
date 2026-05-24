@@ -14,10 +14,10 @@
             Kênh người bán
         </li>
         <c:choose>
-            <c:when test="${sessionScope[Constant.SESSION_USER] != null && sessionScope[Constant.SESSION_USER].roleID == 1}">
-                <a href="admin-dashboard" class="header__navbar-item header__navbar-item-separate">Vào trang staff</a>
+            <c:when test="${sessionScope.user != null && (sessionScope.user.roleID == 1 || sessionScope.user.roleID == 3)}">
+                <a href="admin-dashboard" class="header__navbar-item header__navbar-item-separate">Vào kênh bán hàng</a>
             </c:when>
-            <c:when test="${sessionScope[Constant.SESSION_USER] != null && sessionScope[Constant.SESSION_USER].roleID == 2}">
+            <c:when test="${sessionScope.user != null && sessionScope.user.roleID == 2}">
                 <a href="#" class="header__navbar-item header__navbar-item-separate">Trở thành người bán</a>
             </c:when>
             <c:otherwise>
@@ -145,7 +145,7 @@
         </li>  
         <c:choose>
             <%-- TRƯỜNG HỢP CHƯA ĐĂNG NHẬP (KHÁCH) --%>
-            <c:when test="${sessionScope[Constant.SESSION_USER] == null}">
+            <c:when test="${sessionScope.user == null}">
                 <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">
                     <a href="authen?action=register" class="header__navbar-item-link">Đăng Ký</a>
                 </li>
@@ -160,22 +160,23 @@
 
                     <div class="user-wrapper">
                         <span class="header__navbar-user-name">
-                            ${sessionScope[Constant.SESSION_USER].fullName}
+                            ${sessionScope.user.fullName}
                         </span>
 
                         <!-- DROPDOWN -->
                         <ul class="user-menu">
                             
 
-                            <c:if test="${sessionScope[Constant.SESSION_USER].roleID == 1}">
+                            <li><a href="profile">Tài Khoản Của Tôi</a></li>
+
+                            <c:if test="${sessionScope.user.roleID == 1 || sessionScope.user.roleID == 3}">
                                 <li>
                                     <a href="admin-dashboard" style="color:red;font-weight:bold;">
                                         Quản Lý Cửa Hàng
                                     </a>
                                 </li>
                             </c:if>
-                                <c:if test="${sessionScope[Constant.SESSION_USER].roleID == 2}">
-                                <li><a href="profile">Tài Khoản Của Tôi</a></li>
+                                <c:if test="${sessionScope.user.roleID == 2}">
                                 <li><a href="user-purchase">Đơn Mua</a></li>
                             </c:if>
 

@@ -38,6 +38,29 @@ public class CartService {
         return productId;
     }
 
+    public int buyNow(List<Item> cart, String productIdRaw, String quantityRaw) {
+        int productId = parsePositiveInt(productIdRaw, "Product is invalid.");
+        int quantity = parsePositiveInt(quantityRaw, "Quantity must be greater than 0.");
+
+        Product product = new ProductDAO().findById(productId);
+        if (product == null || product.getStatus() != 1) {
+            throw new IllegalArgumentException("Product is not available.");
+        }
+        if (quantity > product.getQuantity()) {
+            throw new IllegalArgumentException("Requested quantity is greater than current stock.");
+        }
+
+        Item existingItem = findItem(cart, productId);
+        if (existingItem == null) {
+            cart.add(new Item(product, quantity));
+        } else {
+            existingItem.setQuantity(quantity);
+            existingItem.setProduct(product);
+        }
+
+        return productId;
+    }
+
     public void removeFromCart(List<Item> cart, String productIdRaw) {
         int productId = parsePositiveInt(productIdRaw, "Product is invalid.");
         cart.removeIf(item -> item.getProduct().getProductID() == productId);

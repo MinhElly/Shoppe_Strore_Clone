@@ -30,9 +30,10 @@ public class ProductDAO extends GenericDAO<Product> {
     }
 
     public Product findById(int id) {
-        String sql = "SELECT [productID], [productName], [image], [price], [quantity], [soldQuantity], "
-                + "[describe], [categoryID], [importDate], [usingDate], [status] "
-                + "FROM [dbo].[Product] WHERE productID = ?";
+        String sql = "SELECT p.*, u.[fullName] AS sellerName "
+                + "FROM [dbo].[Product] p "
+                + "LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID] "
+                + "WHERE p.[productID] = ?";
 
         try {
             statement = connection.prepareStatement(sql);
@@ -69,9 +70,9 @@ public class ProductDAO extends GenericDAO<Product> {
 
     public List<Product> findAllProduct() {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT [productID], [productName], [image], [price], [quantity], [soldQuantity], "
-                + "[describe], [categoryID], [importDate], [usingDate], [status] "
-                + "FROM [dbo].[Product]";
+        String sql = "SELECT p.*, u.[fullName] AS sellerName "
+                + "FROM [dbo].[Product] p "
+                + "LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID]";
 
         try {
             statement = connection.prepareStatement(sql);
@@ -89,7 +90,7 @@ public class ProductDAO extends GenericDAO<Product> {
     }
 
     public void insertProduct(Product pro) {
-        String sql = "INSERT INTO [dbo].[Product] ([productName], [image], [price], [quantity], [soldQuantity], [describe], [categoryID], [importDate], [usingDate], [status]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [dbo].[Product] ([productName], [image], [price], [quantity], [soldQuantity], [describe], [categoryID], [importDate], [usingDate], [status], [sellerID]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             statement = connection.prepareStatement(sql);
 
@@ -103,6 +104,7 @@ public class ProductDAO extends GenericDAO<Product> {
             statement.setDate(8, pro.getImportDate() != null ? new java.sql.Date(pro.getImportDate().getTime()) : null);
             statement.setDate(9, pro.getUsingDate() != null ? new java.sql.Date(pro.getUsingDate().getTime()) : null);
             statement.setInt(10, pro.getStatus());
+            statement.setString(11, pro.getSellerId());
 
             statement.executeUpdate();
         } catch (Exception e) {
@@ -122,7 +124,8 @@ public class ProductDAO extends GenericDAO<Product> {
                 + "[categoryID] = ?, "
                 + "[importDate] = ?, "
                 + "[usingDate] = ?, "
-                + "[status] = ? "
+                + "[status] = ?, "
+                + "[sellerID] = ? "
                 + "WHERE productID = ?";
         try {
 
@@ -138,7 +141,8 @@ public class ProductDAO extends GenericDAO<Product> {
             statement.setDate(8, pro.getImportDate() != null ? new java.sql.Date(pro.getImportDate().getTime()) : null);
             statement.setDate(9, pro.getUsingDate() != null ? new java.sql.Date(pro.getUsingDate().getTime()) : null);
             statement.setInt(10, pro.getStatus());
-            statement.setInt(11, pro.getProductID());
+            statement.setString(11, pro.getSellerId());
+            statement.setInt(12, pro.getProductID());
 
             statement.executeUpdate();
         } catch (Exception e) {
@@ -161,16 +165,23 @@ public class ProductDAO extends GenericDAO<Product> {
         p.setImportDate(rs.getDate("importDate"));
         p.setUsingDate(rs.getDate("usingDate"));
         p.setStatus(rs.getInt("status"));
+        p.setSellerId(rs.getString("sellerID"));
+        try {
+            p.setSellerName(rs.getString("sellerName"));
+        } catch (SQLException ignored) {
+            // sellerName is only present in JOIN queries.
+        }
         return p;
     }
     // Lấy danh sách sản phẩm theo trang cho trang chủ
 
     public List<Product> pagingProduct(int page) {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT [productID], [productName], [image], [price], [quantity], [soldQuantity], "
-                + "[describe], [categoryID], [importDate], [usingDate], [status] "
-                + "FROM [dbo].[Product] "
-                + "ORDER BY productID "
+        String sql = "SELECT p.*, u.[fullName] AS sellerName "
+                + "FROM [dbo].[Product] p "
+                + "LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID] "
+                + "WHERE p.[status] = 1 "
+                + "ORDER BY p.[productID] "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -196,10 +207,10 @@ public class ProductDAO extends GenericDAO<Product> {
     public List<Product> getRelatedProducts(String categoryID, int currentProductID) {
         List<Product> list = new ArrayList<>();
         // Dùng TOP 6 của SQL Server để lấy đúng 6 sản phẩm hiển thị trên 1 hàng
-        String sql = "SELECT TOP 6 [productID], [productName], [image], [price], [quantity], [soldQuantity], "
-                + "[describe], [categoryID], [importDate], [usingDate], [status] "
-                + "FROM [dbo].[Product] "
-                + "WHERE [categoryID] = ? AND [productID] != ?"; // Cùng danh mục, khác ID hiện tại
+        String sql = "SELECT TOP 6 p.*, u.[fullName] AS sellerName "
+                + "FROM [dbo].[Product] p "
+                + "LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID] "
+                + "WHERE p.[categoryID] = ? AND p.[productID] != ? AND p.[status] = 1";
         try {
             statement = connection.prepareStatement(sql);
             statement.setString(1, categoryID);
@@ -230,45 +241,45 @@ public class ProductDAO extends GenericDAO<Product> {
     // 1. Hàm lấy danh sách sản phẩm động
     public List<Product> filterAndSortProduct(String keyword, String categoryID, Double minPrice, Double maxPrice, String sortType, int page) {
         List<Product> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM [dbo].[Product] WHERE status =1 ");
+        StringBuilder sql = new StringBuilder("SELECT p.*, u.[fullName] AS sellerName FROM [dbo].[Product] p LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID] WHERE p.[status] = 1 ");
 
         // Lọc theo Từ khóa (Search) - Tìm kiếm gần đúng với LIKE
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append(" AND productName LIKE ? ");
+            sql.append(" AND p.[productName] LIKE ? ");
         }
         // Lọc theo Category
         if (categoryID != null && !categoryID.isEmpty()) {
-            sql.append(" AND categoryID = ? ");
+            sql.append(" AND p.[categoryID] = ? ");
         }
         // Lọc theo Giá
         if (minPrice != null) {
-            sql.append(" AND price >= ? ");
+            sql.append(" AND p.[price] >= ? ");
         }
         if (maxPrice != null) {
-            sql.append(" AND price <= ? ");
+            sql.append(" AND p.[price] <= ? ");
         }
 
         // Sắp xếp
         if (sortType != null && !sortType.isEmpty()) {
             switch (sortType) {
                 case "new":
-                    sql.append(" ORDER BY importDate DESC, productID DESC ");
+                    sql.append(" ORDER BY p.[importDate] DESC, p.[productID] DESC ");
                     break; // Mới nhất
                 case "bestseller":
-                    sql.append(" ORDER BY soldQuantity DESC ");
+                    sql.append(" ORDER BY p.[soldQuantity] DESC ");
                     break; // Bán chạy
                 case "priceAsc":
-                    sql.append(" ORDER BY price ASC ");
+                    sql.append(" ORDER BY p.[price] ASC ");
                     break; // Giá thấp đến cao
                 case "priceDesc":
-                    sql.append(" ORDER BY price DESC ");
+                    sql.append(" ORDER BY p.[price] DESC ");
                     break; // Giá cao xuống thấp
                 default:
-                    sql.append(" ORDER BY productID ASC ");
+                    sql.append(" ORDER BY p.[productID] ASC ");
                     break; // Phổ biến (Mặc định)
             }
         } else {
-            sql.append(" ORDER BY productID ASC ");
+            sql.append(" ORDER BY p.[productID] ASC ");
         }
 
         // Phân trang
@@ -408,23 +419,63 @@ public class ProductDAO extends GenericDAO<Product> {
         }
     }
 
+    public void deleteProduct(int id, String sellerId, boolean isAdmin) {
+        updateProductStatus(id, sellerId, isAdmin, 0);
+    }
+
+    public void restoreProduct(int id, String sellerId, boolean isAdmin) {
+        updateProductStatus(id, sellerId, isAdmin, 1);
+    }
+
+    private void updateProductStatus(int id, String sellerId, boolean isAdmin, int status) {
+        StringBuilder sql = new StringBuilder("UPDATE [dbo].[Product] SET [status] = ? WHERE [productID] = ?");
+        if (!isAdmin) {
+            sql.append(" AND [sellerID] = ?");
+        }
+        try {
+            statement = connection.prepareStatement(sql.toString());
+            statement.setInt(1, status);
+            statement.setInt(2, id);
+            if (!isAdmin) {
+                statement.setString(3, sellerId);
+            }
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
     // 2. Lấy danh sách sản phẩm cho Admin (Có lọc theo status 1 hoặc 0)
     public List<Product> getAdminProducts(String keyword, int statusFilter, int page) {
+        return getAdminProducts(keyword, statusFilter, page, null, true);
+    }
+
+    public List<Product> getAdminProducts(String keyword, int statusFilter, int page, String sellerId, boolean isAdmin) {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[Product] "
-                + "WHERE productName LIKE ? AND status = ? "
-                + "ORDER BY productID DESC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        StringBuilder sql = new StringBuilder("SELECT p.*, u.[fullName] AS sellerName "
+                + "FROM [dbo].[Product] p "
+                + "LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID] "
+                + "WHERE p.[productName] LIKE ? AND p.[status] = ? ");
+        if (!isAdmin) {
+            sql.append("AND p.[sellerID] = ? ");
+        }
+        sql.append("ORDER BY p.[productID] DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, "%" + keyword + "%");
-            statement.setInt(2, statusFilter); // Lọc theo 1 (Đang bán) hoặc 0 (Thùng rác)
-            statement.setInt(3, (page - 1) * constant.Constant.RECORD_PER_PAGE);
-            statement.setInt(4, constant.Constant.RECORD_PER_PAGE);
+            statement = connection.prepareStatement(sql.toString());
+            int index = 1;
+            statement.setString(index++, "%" + keyword + "%");
+            statement.setInt(index++, statusFilter);
+            if (!isAdmin) {
+                statement.setString(index++, sellerId);
+            }
+            statement.setInt(index++, (page - 1) * constant.Constant.RECORD_PER_PAGE);
+            statement.setInt(index, constant.Constant.RECORD_PER_PAGE);
 
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                list.add(mapResultSetToProduct(resultSet)); // Tận dụng lại hàm map cực xịn của bạn
+                list.add(mapResultSetToProduct(resultSet));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -436,11 +487,22 @@ public class ProductDAO extends GenericDAO<Product> {
 
     // 3. Đếm tổng số sản phẩm cho Admin (Để phân trang)
     public int countAdminProducts(String keyword, int statusFilter) {
-        String sql = "SELECT COUNT(*) FROM [dbo].[Product] WHERE productName LIKE ? AND status = ?";
+        return countAdminProducts(keyword, statusFilter, null, true);
+    }
+
+    public int countAdminProducts(String keyword, int statusFilter, String sellerId, boolean isAdmin) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM [dbo].[Product] WHERE [productName] LIKE ? AND [status] = ? ");
+        if (!isAdmin) {
+            sql.append("AND [sellerID] = ?");
+        }
         try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, "%" + keyword + "%");
-            statement.setInt(2, statusFilter);
+            statement = connection.prepareStatement(sql.toString());
+            int index = 1;
+            statement.setString(index++, "%" + keyword + "%");
+            statement.setInt(index++, statusFilter);
+            if (!isAdmin) {
+                statement.setString(index, sellerId);
+            }
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);

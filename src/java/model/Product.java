@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class Product {
     int productID;
-    String productName, image;
+    String productName, image, sellerId, sellerName;
     double price;
     int quantity, soldQuantity;
     String describe, categoryID;
@@ -36,6 +36,11 @@ public class Product {
         this.importDate = importDate;
         this.usingDate = usingDate;
         this.status = status;
+    }
+
+    public Product(int productID, String productName, String image, double price, int quantity, int soldQuantity, String describe, String categoryID, Date importDate, Date usingDate, int status, String sellerId) {
+        this(productID, productName, image, price, quantity, soldQuantity, describe, categoryID, importDate, usingDate, status);
+        this.sellerId = sellerId;
     }
 
     public int getProductID() {
@@ -124,6 +129,22 @@ public class Product {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
     
     

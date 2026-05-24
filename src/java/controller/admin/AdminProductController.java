@@ -1,5 +1,6 @@
 package controller.admin;
 
+import constant.Constant;
 import dal.ProductDAO;
 import model.Product;
 import java.io.File;
@@ -14,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import model.Category;
+import model.User;
 
 @WebServlet(name = "ProductAdminServlet", urlPatterns = {"/admin-product"})
 @MultipartConfig(
@@ -34,12 +35,15 @@ public class AdminProductController extends HttpServlet {
         if (action == null) {
             action = "view";
         }
+        HttpSession session = request.getSession(false);
+        User currentUser = session == null ? null : (User) session.getAttribute(Constant.SESSION_USER);
+        boolean isAdmin = Constant.isAdmin(currentUser);
 
         // ================= CHỨC NĂNG XÓA =================
         if ("delete".equals(action)) {
             String idStr = request.getParameter("id");
             if (idStr != null && !idStr.isEmpty()) {
-                pdao.deleteProduct(Integer.parseInt(idStr));
+                pdao.deleteProduct(Integer.parseInt(idStr), currentUser.getUserID(), isAdmin);
             }
             response.sendRedirect("admin-product?action=view&status=1"); // Xóa xong quay lại trang Đang bán
             return;
@@ -49,7 +53,7 @@ public class AdminProductController extends HttpServlet {
         if ("restore".equals(action)) {
             String idStr = request.getParameter("id");
             if (idStr != null && !idStr.isEmpty()) {
-                pdao.restoreProduct(Integer.parseInt(idStr));
+                pdao.restoreProduct(Integer.parseInt(idStr), currentUser.getUserID(), isAdmin);
             }
             response.sendRedirect("admin-product?action=view&status=0"); // Khôi phục xong quay lại Thùng rác
             return;
@@ -74,8 +78,8 @@ public class AdminProductController extends HttpServlet {
             }
 
             // GỌI HÀM DAO MỚI CHO ADMIN
-            List<Product> listProduct = pdao.getAdminProducts(keyword, statusFilter, page);
-            int totalRecords = pdao.countAdminProducts(keyword, statusFilter);
+            List<Product> listProduct = pdao.getAdminProducts(keyword, statusFilter, page, currentUser.getUserID(), isAdmin);
+            int totalRecords = pdao.countAdminProducts(keyword, statusFilter, currentUser.getUserID(), isAdmin);
             
             int recordsPerPage = constant.Constant.RECORD_PER_PAGE; 
             int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
@@ -85,7 +89,7 @@ public class AdminProductController extends HttpServlet {
             request.setAttribute("listCategories", cdao.findAll());
 
             // Gửi dữ liệu sang JSP
-            HttpSession session = request.getSession();
+            session = request.getSession();
             session.setAttribute("listAdminProduct", listProduct);
 
             request.setAttribute("currentPage", page);
@@ -149,6 +153,8 @@ public class AdminProductController extends HttpServlet {
             pro.setCategoryID(categoryID);
             pro.setImage(pathOfFile);
             pro.setStatus(1); 
+            User user = (User) request.getSession().getAttribute(Constant.SESSION_USER);
+            pro.setSellerId(user.getUserID());
 
             pdao.insertProduct(pro);
 
@@ -182,7 +188,8 @@ public class AdminProductController extends HttpServlet {
             }
 
             Product pro = pdao.findById(productID);
-            if (pro != null) {
+            User user = (User) request.getSession().getAttribute(Constant.SESSION_USER);
+            if (pro != null && (Constant.isAdmin(user) || user.getUserID().equals(pro.getSellerId()))) {
                 pro.setProductName(productName);
                 pro.setPrice(price);
                 pro.setQuantity(quantity);

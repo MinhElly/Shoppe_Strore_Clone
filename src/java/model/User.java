@@ -11,7 +11,7 @@ package model;
 public class User {
     String userID, fullName, username, password;
     int roleID;
-    String address, phone, email;
+    String address, phone, email, avatar;
     boolean activate;
 
     public User(String userID, String fullName, String username, String password, int roleID, String address, String phone, String email, boolean activate) {
@@ -24,6 +24,11 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.activate = activate;
+    }
+
+    public User(String userID, String fullName, String username, String password, int roleID, String address, String phone, String email, String avatar, boolean activate) {
+        this(userID, fullName, username, password, roleID, address, phone, email, activate);
+        this.avatar = avatar;
     }
 
     public User() {
@@ -101,6 +106,14 @@ public class User {
 
     public void setActivate(boolean activate) {
         this.activate = activate;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
     
     

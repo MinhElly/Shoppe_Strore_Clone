@@ -47,19 +47,23 @@ public class CartController extends HttpServlet {
         try {
             switch (action) {
                 case "add_to_cart":
-                case "buy_now":
                     int productId = cartService.addToCart(
                             cart,
                             request.getParameter("productId"),
                             request.getParameter("quantity")
                     );
                     saveCart(session, cart);
+                    response.sendRedirect("product-detail?id=" + productId);
+                    break;
 
-                    if ("buy_now".equals(action)) {
-                        response.sendRedirect("cart?action=view");
-                    } else {
-                        response.sendRedirect("product-detail?id=" + productId);
-                    }
+                case "buy_now":
+                    cartService.buyNow(
+                            cart,
+                            request.getParameter("productId"),
+                            request.getParameter("quantity")
+                    );
+                    saveCart(session, cart);
+                    response.sendRedirect("cart?action=view");
                     break;
 
                 case "delete":

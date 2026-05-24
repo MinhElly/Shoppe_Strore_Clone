@@ -12,6 +12,7 @@ public class OrderDetail {
     int detailID;
     double price;
     int quantity, orderID, productID;
+    String status;
 
     public OrderDetail(int detailID, double price, int quantity, int orderID, int productID) {
         this.detailID = detailID;
@@ -19,6 +20,11 @@ public class OrderDetail {
         this.quantity = quantity;
         this.orderID = orderID;
         this.productID = productID;
+    }
+
+    public OrderDetail(int detailID, double price, int quantity, int orderID, int productID, String status) {
+        this(detailID, price, quantity, orderID, productID);
+        this.status = status;
     }
 
     public int getDetailID() {
@@ -59,6 +65,14 @@ public class OrderDetail {
 
     public void setProductID(int productID) {
         this.productID = productID;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     

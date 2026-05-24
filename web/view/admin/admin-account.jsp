@@ -35,9 +35,17 @@
 
                             <div class="col l-2 m-0 c-0">
                                 <div class="admin-sidebar__user">
-                                    <img src="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" alt="Avatar" class="admin-sidebar__user-avatar">
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.user.avatar}">
+                                            <c:set var="avatarSrc" value="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="avatarSrc" value="${pageContext.request.contextPath}/assets/img/avatar/${sessionScope.user.avatar}" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <img src="${avatarSrc}" alt="Avatar" class="admin-sidebar__user-avatar">
                                 <div class="admin-sidebar__user-info">
-                                    <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Nhân viên bán hàng'}</div>
+                                    <div class="admin-sidebar__user-name">${sessionScope.user.fullName != null ? sessionScope.user.fullName : 'Admin'}</div>
                                    
                                 </div>
                             </div>
@@ -99,6 +107,7 @@
                                             <th>Họ và Tên</th>
                                             <th>Email <i class="fa-solid fa-arrows-up-down"></i></th>
                                             <th>Vai trò (ID) <i class="fa-solid fa-arrows-up-down"></i></th>
+                                            <th>Trạng thái</th>
                                             <th style="text-align: center;">Hành động</th>
                                         </tr>
                                     </thead>
@@ -110,18 +119,40 @@
                                                 <td>${acc.fullName}</td>
                                                 <td>${acc.email}</td>
                                                 <td>
+                                                    <form action="admin-account" method="POST" style="display:flex;gap:6px;align-items:center;">
+                                                        <input type="hidden" name="action" value="updateRole">
+                                                        <input type="hidden" name="id" value="${acc.userID}">
+                                                        <select name="roleID" style="padding:5px;border:1px solid #ddd;">
+                                                            <option value="1" ${acc.roleID == 1 ? 'selected' : ''}>Admin</option>
+                                                            <option value="2" ${acc.roleID == 2 ? 'selected' : ''}>Customer</option>
+                                                            <option value="3" ${acc.roleID == 3 ? 'selected' : ''}>Staff</option>
+                                                        </select>
+                                                        <button type="submit" class="btn-action btn-action--edit" style="border:0;">Lưu</button>
+                                                    </form>
+                                                </td>
+                                                <td>
                                                     <c:choose>
-                                                        <c:when test="${acc.roleID == 1}"><span style="color: #d0011b; font-weight: bold;">1 (Staff)</span></c:when>
-                                                        <c:otherwise>2 (Customer)</c:otherwise>
+                                                        <c:when test="${acc.activate}"><span style="color:#16833a;font-weight:bold;">Đang hoạt động</span></c:when>
+                                                        <c:otherwise><span style="color:#d0011b;font-weight:bold;">Đang bị khóa</span></c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <td style="text-align: center;">
-                                                    <c:if test="${acc.roleID != 1}"> <a href="admin-account?action=delete&id=${acc.userID}" 
-                                                       class="btn-action btn-action--delete"
-                                                       onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này?');">
-                                                            <i class="fa-solid fa-lock"></i> Khóa
-                                                        </a>
-                                                    </c:if>
+                                                    <c:choose>
+                                                        <c:when test="${acc.activate}">
+                                                            <a href="admin-account?action=ban&id=${acc.userID}"
+                                                               class="btn-action btn-action--delete"
+                                                               onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này?');">
+                                                                <i class="fa-solid fa-lock"></i> Khóa
+                                                            </a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="admin-account?action=unban&id=${acc.userID}"
+                                                               class="btn-action btn-action--edit"
+                                                               onclick="return confirm('Mở khóa tài khoản này?');">
+                                                                <i class="fa-solid fa-lock-open"></i> Mở khóa
+                                                            </a>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                             </tr>
                                         </c:forEach>

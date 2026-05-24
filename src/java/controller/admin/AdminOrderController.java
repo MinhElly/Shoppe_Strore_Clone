@@ -1,103 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller.admin;
 
+import constant.Constant;
 import dal.OrderDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
+import dto.OrderItemDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
-import model.Order;
+import model.User;
 
-/**
- *
- * @author admin
- */
-@WebServlet(name="AdminOrderController", urlPatterns={"/admin-order"})
+@WebServlet(name = "AdminOrderController", urlPatterns = {"/admin-order"})
 public class AdminOrderController extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AdminOrderController</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AdminOrderController at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String action = request.getParameter("action");
-        OrderDAO odao = new OrderDAO();
-
-        // Mặc định là xem danh sách
-        if (action == null || action.equals("view")) {
-            List<Order> list = odao.getAllOrdersAdmin();
-            request.setAttribute("listOrders", list);
-            request.getRequestDispatcher("/view/admin/admin-order.jsp").forward(request, response);
-        } 
-        // Xử lý cập nhật trạng thái đơn hàng
-        else if (action.equals("updateStatus")) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String status = request.getParameter("status");
-            odao.updateOrderStatus(id, status);
-            // Cập nhật xong thì quay lại trang danh sách
-            response.sendRedirect("admin-order?action=view");
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        User user = session == null ? null : (User) session.getAttribute(Constant.SESSION_USER);
+        if (!Constant.canAccessStaffArea(user)) {
+            response.sendRedirect(request.getContextPath() + "/home?error=access_denied");
+            return;
         }
-    }
-    
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "view";
+        }
+
+        OrderDAO odao = new OrderDAO();
+        boolean isAdmin = Constant.isAdmin(user);
+
+        if ("updateStatus".equals(action)) {
+            int detailId = Integer.parseInt(request.getParameter("detailId"));
+            String status = request.getParameter("status");
+            odao.updateOrderDetailStatus(detailId, status, user.getUserID(), isAdmin);
+            response.sendRedirect("admin-order?action=view");
+            return;
+        }
+
+        String status = request.getParameter("status");
+        List<OrderItemDTO> list = odao.getOrderItemsForStaff(user.getUserID(), isAdmin, status);
+        request.setAttribute("listOrderItems", list);
+        request.setAttribute("activeStatus", Constant.isOrderStatus(status) ? status : "Tất cả");
+        request.getRequestDispatcher("/view/admin/admin-order.jsp").forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        doGet(request, response);
     }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

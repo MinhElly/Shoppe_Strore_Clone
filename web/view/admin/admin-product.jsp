@@ -36,9 +36,17 @@
 
                             <div class="col l-2 m-0 c-0">
                                 <div class="admin-sidebar__user">
-                                    <img src="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" alt="Avatar" class="admin-sidebar__user-avatar">
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.user.avatar}">
+                                            <c:set var="avatarSrc" value="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="avatarSrc" value="${pageContext.request.contextPath}/assets/img/avatar/${sessionScope.user.avatar}" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <img src="${avatarSrc}" alt="Avatar" class="admin-sidebar__user-avatar">
                                 <div class="admin-sidebar__user-info">
-                                    <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Nhân viên bán hàng'}</div>
+                                    <div class="admin-sidebar__user-name">${sessionScope.user.fullName != null ? sessionScope.user.fullName : 'Nhân viên bán hàng'}</div>
                                     
                                 </div>
                             </div>
@@ -56,11 +64,13 @@
                                     </a>
                                 </li>
 
-                                <li class="admin-sidebar__menu-item">
-                                    <a href="admin-account?action=view" class="admin-sidebar__menu-link">
-                                        <i class="admin-sidebar__menu-icon icon-green fa-solid fa-users"></i> Quản Lý Tài Khoản
-                                    </a>
-                                </li>
+                                <c:if test="${sessionScope.user.roleID == 1}">
+                                    <li class="admin-sidebar__menu-item">
+                                        <a href="admin-account?action=view" class="admin-sidebar__menu-link">
+                                            <i class="admin-sidebar__menu-icon icon-green fa-solid fa-users"></i> Quản Lý Tài Khoản
+                                        </a>
+                                    </li>
+                                </c:if>
 
                                 <li class="admin-sidebar__menu-item">
                                     <a href="admin-order?action=view" class="admin-sidebar__menu-link">
@@ -98,6 +108,7 @@
                                     <div class="table-controls__search">
                                         <form action="admin-product" method="GET" style="display: flex; align-items: center;">
                                             <input type="hidden" name="action" value="view">
+                                            <input type="hidden" name="status" value="${currentStatus}">
                                             <label style="display: flex; align-items: center;">Search: 
                                                 <input type="text" name="keyword" value="${keyword}" placeholder="Tìm tên sản phẩm..." style="margin-left: 8px;">
                                             </label>
@@ -112,9 +123,13 @@
                                             <th>Mã SP</th>
                                             <th>Tên SP</th>
                                             <th style="text-align: center;">Ảnh</th>
-                                            <th>SL</th>
+                                            <th>Còn lại</th>
+                                            <th>Đã bán</th>
                                             <th>Giá</th>
                                             <th>Loại</th>
+                                            <c:if test="${sessionScope.user.roleID == 1}">
+                                                <th>Người bán</th>
+                                            </c:if>
                                             <th>Mô tả</th>
                                             <th style="text-align: center;">Hành động</th>
                                         </tr>
@@ -128,8 +143,12 @@
                                                     <img src="${pageContext.request.contextPath}/assets/img/product/${p.image}" class="admin-table-img" alt="img">
                                                 </td>
                                                 <td>${p.quantity}</td>
+                                                <td>${p.soldQuantity}</td>
                                                 <td><fmt:formatNumber value="${p.price}" pattern="#,###"/>đ</td>
                                                 <td>${p.categoryID}</td>
+                                                <c:if test="${sessionScope.user.roleID == 1}">
+                                                    <td>${p.sellerName}</td>
+                                                </c:if>
                                                 <td class="col-desc">${p.describe}</td>
 
                                                 <td>
@@ -177,17 +196,17 @@
                                     </div>
                                     <ul class="table-pagination">
                                         <c:if test="${currentPage > 1}">
-                                            <li><a href="admin-product?action=view&keyword=${keyword}&page=${currentPage - 1}">Previous</a></li>
+                                            <li><a href="admin-product?action=view&status=${currentStatus}&keyword=${keyword}&page=${currentPage - 1}">Previous</a></li>
                                             </c:if>
 
                                         <c:forEach begin="1" end="${totalPages}" var="i">
                                             <li class="${currentPage == i ? 'active' : ''}">
-                                                <a href="admin-product?action=view&keyword=${keyword}&page=${i}">${i}</a>
+                                                <a href="admin-product?action=view&status=${currentStatus}&keyword=${keyword}&page=${i}">${i}</a>
                                             </li>
                                         </c:forEach>
 
                                         <c:if test="${currentPage < totalPages}">
-                                            <li><a href="admin-product?action=view&keyword=${keyword}&page=${currentPage + 1}">Next</a></li>
+                                            <li><a href="admin-product?action=view&status=${currentStatus}&keyword=${keyword}&page=${currentPage + 1}">Next</a></li>
                                             </c:if>
                                     </ul>
                                 </div>

@@ -40,7 +40,7 @@ public class StaffFilter implements Filter {
             return;
         }
 
-        if (!Constant.isStaff(user)) {
+        if (!Constant.canAccessStaffArea(user)) {
             res.sendRedirect(req.getContextPath() + "/home?error=access_denied");
             return;
         }

@@ -36,9 +36,17 @@
 
                             <div class="col l-2 m-0 c-0">
                                 <div class="admin-sidebar__user">
-                                    <img src="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" alt="Avatar" class="admin-sidebar__user-avatar">
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.user.avatar}">
+                                            <c:set var="avatarSrc" value="${pageContext.request.contextPath}/assets/img/avatar-default.jpg" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="avatarSrc" value="${pageContext.request.contextPath}/assets/img/avatar/${sessionScope.user.avatar}" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <img src="${avatarSrc}" alt="Avatar" class="admin-sidebar__user-avatar">
                                 <div class="admin-sidebar__user-info">
-                                    <div class="admin-sidebar__user-name">${sessionScope.SESSION_USER.fullName != null ? sessionScope.SESSION_USER.fullName : 'Nhân viên bán hàng'}</div>
+                                    <div class="admin-sidebar__user-name">${sessionScope.user.fullName != null ? sessionScope.user.fullName : 'Nhân viên bán hàng'}</div>
                                     
                                 </div>
                             </div>
@@ -56,11 +64,13 @@
                                     </a>
                                 </li>
 
-                                <li class="admin-sidebar__menu-item">
-                                    <a href="admin-account?action=view" class="admin-sidebar__menu-link">
-                                        <i class="admin-sidebar__menu-icon icon-green fa-solid fa-users"></i> Quản Lý Tài Khoản
-                                    </a>
-                                </li>
+                                <c:if test="${sessionScope.user.roleID == 1}">
+                                    <li class="admin-sidebar__menu-item">
+                                        <a href="admin-account?action=view" class="admin-sidebar__menu-link">
+                                            <i class="admin-sidebar__menu-icon icon-green fa-solid fa-users"></i> Quản Lý Tài Khoản
+                                        </a>
+                                    </li>
+                                </c:if>
 
                                 <li class="admin-sidebar__menu-item">
                                     <a href="admin-order?action=view" class="admin-sidebar__menu-link">
@@ -69,87 +79,6 @@
                                 </li>
                             </ul>
                         </div>
-
-<!--                        <div class="col l-10 m-12 c-12">
-
-                            <ul class="admin-tabs">
-                                <li class="admin-tabs__item admin-tabs__item--active"><a href="#" class="admin-tabs__link">Tất cả</a></li>
-                                <li class="admin-tabs__item"><a href="#" class="admin-tabs__link">Chờ thanh toán</a></li>
-                                <li class="admin-tabs__item"><a href="#" class="admin-tabs__link">Vận chuyển</a></li>
-                                <li class="admin-tabs__item"><a href="#" class="admin-tabs__link">Chờ giao hàng</a></li>
-                                <li class="admin-tabs__item"><a href="#" class="admin-tabs__link">Hoàn thành</a></li>
-                                <li class="admin-tabs__item"><a href="#" class="admin-tabs__link">Đã hủy</a></li>
-                                <li class="admin-tabs__item"><a href="#" class="admin-tabs__link">Trả hàng/Hoàn tiền</a></li>
-                            </ul>
-
-                            <div class="admin-search">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" placeholder="Bạn có thể tìm kiếm theo tên Shop, ID đơn hàng hoặc Tên Sản phẩm">
-                            </div>
-
-                            <div class="admin-order">
-                                <div class="admin-order__header">
-                                    <div class="admin-order__shop-info">
-                                        <span class="admin-order__label">Yêu thích</span> Linh Kiện Điện Tử ViNa
-                                    </div>
-                                    <div class="admin-order__status">
-                                        <i class="fa-solid fa-truck" style="color:#00bfa5; margin-right:5px;"></i> <span style="color:#00bfa5;">Giao hàng thành công</span> | HOÀN THÀNH
-                                    </div>
-                                </div>
-                                <div class="admin-order__body">
-                                    <img src="${pageContext.request.contextPath}/assets/img/product/lcd1.jpg" alt="Product" class="admin-order__img">
-                                    <div class="admin-order__detail">
-                                        <h4 class="admin-order__name">Màn hình LCD 1602 2004 5V xanh lá/xanh dương Có Đèn Nền - Kèm I2C</h4>
-                                        <p class="admin-order__variant">Phân loại hàng: LCD X.Lá + I2C Đã Hàn</p>
-                                        <p class="admin-order__qty">x1</p>
-                                    </div>
-                                    <div class="admin-order__price">51.972đ</div>
-                                </div>
-                                <div class="admin-order__footer">
-                                    <div class="admin-order__total">
-                                        Thành tiền: <span class="admin-order__total-price">51.972đ</span>
-                                    </div>
-                                    <div class="admin-order__actions">
-                                        <span class="admin-order__note">Đánh giá sản phẩm trước 31-03-2026<br><span style="color:var(--primary-color);">Đánh giá ngay và nhận 200 Xu</span></span>
-                                        <div class="admin-order__btn-group">
-                                            <button class="btn btn--primary admin-order__btn">Xác Nhận Đơn</button>
-                                            <button class="btn admin-order__btn admin-order__btn--outline">Liên Hệ Người Mua</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="admin-order">
-                                <div class="admin-order__header">
-                                    <div class="admin-order__shop-info">
-                                        <span class="admin-order__label">Yêu thích</span> Thế Giới Linh Kiện LiKi
-                                    </div>
-                                    <div class="admin-order__status admin-order__status--cancel">ĐÃ HỦY</div>
-                                </div>
-                                <div class="admin-order__body">
-                                    <img src="${pageContext.request.contextPath}/assets/img/product/lcd2.jpg" alt="Product" class="admin-order__img">
-                                    <div class="admin-order__detail">
-                                        <h4 class="admin-order__name">Màn Hình LCD 1602 Xanh Lá, Xanh Dương, Mạch chuyển đổi I2C</h4>
-                                        <p class="admin-order__variant">Phân loại hàng: X.lá + I2c Đã Hàn</p>
-                                        <p class="admin-order__qty">x1</p>
-                                    </div>
-                                    <div class="admin-order__price">51.972đ</div>
-                                </div>
-                                <div class="admin-order__footer">
-                                    <div class="admin-order__total">
-                                        Thành tiền: <span class="admin-order__total-price">51.972đ</span>
-                                    </div>
-                                    <div class="admin-order__actions">
-                                        <span class="admin-order__note">Đã hủy bởi bạn</span>
-                                        <div class="admin-order__btn-group">
-                                            <button class="btn btn--primary admin-order__btn">Xem Chi Tiết</button>
-                                            <button class="btn admin-order__btn admin-order__btn--outline">Xem Thông Tin Hủy</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>-->
                     </div>
                 </div>
             </div>
