@@ -46,16 +46,29 @@
                         <li class="admin-sidebar__menu-item admin-sidebar__menu-item--active">
                             <a href="profile" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-regular fa-user"></i> Hồ sơ</a>
                         </li>
-                        <c:if test="${sessionScope.user.roleID == 2}">
-                            <li class="admin-sidebar__menu-item">
-                                <a href="user-purchase" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-clipboard-list"></i> Đơn Mua</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${sessionScope.user.roleID == 1 || sessionScope.user.roleID == 3}">
-                            <li class="admin-sidebar__menu-item">
-                                <a href="admin-dashboard" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-store"></i> Kênh bán hàng</a>
-                            </li>
-                        </c:if>
+                        <c:choose>
+                            <c:when test="${sessionScope.user.roleID == 1}">
+                                <li class="admin-sidebar__menu-item">
+                                    <a href="admin-product?action=view" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-box-open"></i> Quản lý sản phẩm</a>
+                                </li>
+                                <li class="admin-sidebar__menu-item">
+                                    <a href="admin-account?action=view" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-users"></i> Quản lý tài khoản</a>
+                                </li>
+                            </c:when>
+                            <c:when test="${sessionScope.user.roleID == 3}">
+                                <li class="admin-sidebar__menu-item">
+                                    <a href="admin-order?action=view" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-clipboard-list"></i> Quản lý đơn hàng</a>
+                                </li>
+                                <li class="admin-sidebar__menu-item">
+                                    <a href="admin-product?action=view" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-box-open"></i> Quản lý sản phẩm</a>
+                                </li>
+                            </c:when>
+                            <c:when test="${sessionScope.user.roleID == 2}">
+                                <li class="admin-sidebar__menu-item">
+                                    <a href="user-purchase" class="admin-sidebar__menu-link"><i class="admin-sidebar__menu-icon fa-solid fa-clipboard-list"></i> Đơn mua</a>
+                                </li>
+                            </c:when>
+                        </c:choose>
                     </ul>
                 </div>
 

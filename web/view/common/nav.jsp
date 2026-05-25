@@ -165,20 +165,21 @@
 
                         <!-- DROPDOWN -->
                         <ul class="user-menu">
-                            
+                            <li><a href="profile">Hồ sơ</a></li>
 
-                            <li><a href="profile">Tài Khoản Của Tôi</a></li>
-
-                            <c:if test="${sessionScope.user.roleID == 1 || sessionScope.user.roleID == 3}">
-                                <li>
-                                    <a href="admin-dashboard" style="color:red;font-weight:bold;">
-                                        Quản Lý Cửa Hàng
-                                    </a>
-                                </li>
-                            </c:if>
-                                <c:if test="${sessionScope.user.roleID == 2}">
-                                <li><a href="user-purchase">Đơn Mua</a></li>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${sessionScope.user.roleID == 1}">
+                                    <li><a href="admin-product?action=view">Quản lý sản phẩm</a></li>
+                                    <li><a href="admin-account?action=view">Quản lý tài khoản</a></li>
+                                </c:when>
+                                <c:when test="${sessionScope.user.roleID == 3}">
+                                    <li><a href="admin-order?action=view">Quản lý đơn hàng</a></li>
+                                    <li><a href="admin-product?action=view">Quản lý sản phẩm</a></li>
+                                </c:when>
+                                <c:when test="${sessionScope.user.roleID == 2}">
+                                    <li><a href="user-purchase">Đơn mua</a></li>
+                                </c:when>
+                            </c:choose>
 
                             <li class="separate">
                                 <a href="authen?action=logout">Đăng Xuất</a>

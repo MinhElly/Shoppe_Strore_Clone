@@ -134,20 +134,44 @@
                                 </div>
 
                                 <ul class="pagination home-product__pagination">
+                                    <c:url var="prevPageUrl" value="category">
+                                        <c:param name="keyword" value="${keyword}" />
+                                        <c:param name="cid" value="${tag}" />
+                                        <c:param name="sort" value="${currentSort}" />
+                                        <c:param name="minPrice" value="${minPrice}" />
+                                        <c:param name="maxPrice" value="${maxPrice}" />
+                                        <c:param name="page" value="${currentPage - 1}" />
+                                    </c:url>
                                     <li class="pagination-item">
-                                        <a href="${currentPage > 1 ? 'category?cid=' += tag += '&page=' += (currentPage - 1) : '#'}" class="pagination-item__link">
+                                        <a href="${currentPage > 1 ? prevPageUrl : '#'}" class="pagination-item__link">
                                             <i class="fas fa-angle-left"></i>
                                         </a>
                                     </li>
 
                                     <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <c:url var="pageUrl" value="category">
+                                            <c:param name="keyword" value="${keyword}" />
+                                            <c:param name="cid" value="${tag}" />
+                                            <c:param name="sort" value="${currentSort}" />
+                                            <c:param name="minPrice" value="${minPrice}" />
+                                            <c:param name="maxPrice" value="${maxPrice}" />
+                                            <c:param name="page" value="${i}" />
+                                        </c:url>
                                         <li class="pagination-item ${currentPage == i ? 'pagination-item--active' : ''}">
-                                            <a href="category?cid=${tag}&page=${i}" class="pagination-item__link">${i}</a>
+                                            <a href="${pageUrl}" class="pagination-item__link">${i}</a>
                                         </li>
                                     </c:forEach>
 
+                                    <c:url var="nextPageUrl" value="category">
+                                        <c:param name="keyword" value="${keyword}" />
+                                        <c:param name="cid" value="${tag}" />
+                                        <c:param name="sort" value="${currentSort}" />
+                                        <c:param name="minPrice" value="${minPrice}" />
+                                        <c:param name="maxPrice" value="${maxPrice}" />
+                                        <c:param name="page" value="${currentPage + 1}" />
+                                    </c:url>
                                     <li class="pagination-item">
-                                        <a href="${currentPage < totalPages ? 'category?cid=' += tag += '&page=' += (currentPage + 1) : '#'}" class="pagination-item__link">
+                                        <a href="${currentPage < totalPages ? nextPageUrl : '#'}" class="pagination-item__link">
                                             <i class="fas fa-angle-right"></i>
                                         </a>
                                     </li>

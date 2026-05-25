@@ -63,6 +63,8 @@ ROLE_STAFF = 3
 ### Customer
 
 - Xem sản phẩm, danh mục, chi tiết sản phẩm.
+- Trang chủ hiển thị danh mục và phần “Gợi ý hôm nay” theo thứ tự random sản phẩm.
+- Phần “Gợi ý hôm nay” dùng nút load thêm bằng AJAX để append sản phẩm mới, không reload trang và không nhảy về đầu trang.
 - Thêm sản phẩm vào giỏ hàng.
 - Mua ngay không làm tăng trùng số lượng nếu sản phẩm đã có trong giỏ.
 - Checkout chỉ được thực hiện bởi tài khoản customer đang active.
@@ -103,6 +105,7 @@ ROLE_STAFF = 3
 | Route | Chức năng |
 | --- | --- |
 | `/home` | Trang chủ |
+| `/home?ajax=products&offset={n}&seed={seed}` | Endpoint nội bộ để load thêm sản phẩm gợi ý hôm nay |
 | `/authen?action=login` | Đăng nhập |
 | `/authen?action=register` | Đăng ký customer |
 | `/category` | Danh mục, tìm kiếm, lọc, sắp xếp |
@@ -191,3 +194,5 @@ http://localhost:8080/Shoppee_Store/home
 - Đã mở rộng role thành guest, customer, staff và admin.
 - Đã giới hạn staff theo sản phẩm và đơn hàng của chính staff đó.
 - Đã thêm profile và avatar cho customer/staff/admin.
+- Đã bỏ block Flash Sale tĩnh ở trang chủ.
+- Đã đổi “Gợi ý hôm nay” sang random sản phẩm và load thêm bằng AJAX.

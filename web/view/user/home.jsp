@@ -220,194 +220,25 @@
                         </div>
                         <!-- end: main category -->
 
-                        <!-- start: flash-sale -->
-                        <div class="flash-sale">
-                            <div class="flash-sale__header">
-                                <img
-                                    src="${pageContext.request.contextPath}/assets/img/flash-sale/flash-sale-icon.png"
-                                    alt="Flash Sale"
-                                    class="flash-sale__header-img"
-                                    />
-                                <div class="flash-sale__header-countdown">
-                                    <div class="flash-sale__countdown-item">
-                                        <div class="flash-sale__countdown-item-content">00</div>
-                                    </div>
-                                    <div class="flash-sale__countdown-item">
-                                        <div class="flash-sale__countdown-item-content">00</div>
-                                    </div>
-                                    <div class="flash-sale__countdown-item">
-                                        <div class="flash-sale__countdown-item-content">00</div>
-                                    </div>
-                                </div>
-                                <a href="#" class="flash-sale__view-all">
-                                    Xem tất cả
-                                    <i
-                                        class="flash-sale__view-all-icon fa-solid fa-angle-right"
-                                        ></i>
-                                </a>
-                            </div>
-                            <div class="flash-sale__product grid__row">
-                                <div class="flash-sale__item grid__column-2">
-                                    <a href="#" class="flash-sale__item-link">
-                                        <img
-                                            src="${pageContext.request.contextPath}/assets/img/flash-sale/selrun.png"
-                                            alt="Flash Sale"
-                                            class="flash-sale__item-img"
-                                            />
-                                        <p class="flash-sale__item-price">₫79.000</p>
-                                        <div class="flash-sale__item-progress">
-                                            <div
-                                                class="flash-sale__progress-state"
-                                                style="left: 90px"
-                                                ></div>
-                                            <span class="flash-sale__progress-text"> đã bán 53 </span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="flash-sale__item grid__column-2">
-                                    <a href="#" class="flash-sale__item-link">
-                                        <img
-                                            src="${pageContext.request.contextPath}/assets/img/flash-sale/t-shirt.jpg"
-                                            alt="Flash Sale"
-                                            class="flash-sale__item-img"
-                                            />
-                                        <p class="flash-sale__item-price">₫259.000</p>
-                                        <div class="flash-sale__item-progress">
-                                            <div
-                                                class="flash-sale__progress-state"
-                                                style="left: 55px"
-                                                ></div>
-                                            <span class="flash-sale__progress-text"> đã bán 5 </span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="flash-sale__item grid__column-2">
-                                    <a href="#" class="flash-sale__item-link">
-                                        <img
-                                            src="${pageContext.request.contextPath}/assets/img/flash-sale/rice-cooker.jpg"
-                                            alt="Flash Sale"
-                                            class="flash-sale__item-img"
-                                            />
-                                        <p class="flash-sale__item-price">₫1.059.000</p>
-                                        <div class="flash-sale__item-progress">
-                                            <div
-                                                class="flash-sale__progress-state"
-                                                style="left: 23px"
-                                                ></div>
-                                            <span class="flash-sale__progress-text"> đã bán 3 </span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="flash-sale__item grid__column-2">
-                                    <a href="#" class="flash-sale__item-link">
-                                        <img
-                                            src="${pageContext.request.contextPath}/assets/img/flash-sale/case.jpg"
-                                            alt="Flash Sale"
-                                            class="flash-sale__item-img"
-                                            />
-                                        <p class="flash-sale__item-price">₫1.000</p>
-                                        <div class="flash-sale__item-progress">
-                                            <div
-                                                class="flash-sale__progress-state"
-                                                style="left: 120px"
-                                                ></div>
-                                            <span class="flash-sale__progress-text">
-                                                đã bán 189
-                                            </span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="flash-sale__item grid__column-2">
-                                    <a href="#" class="flash-sale__item-link">
-                                        <img
-                                            src="${pageContext.request.contextPath}/assets/img/flash-sale/oreo.png"
-                                            alt="Flash Sale"
-                                            class="flash-sale__item-img"
-                                            />
-                                        <p class="flash-sale__item-price">₫46.000</p>
-                                        <div class="flash-sale__item-progress">
-                                            <div
-                                                class="flash-sale__progress-state"
-                                                style="left: 22px"
-                                                ></div>
-                                            <span class="flash-sale__progress-text"> đã bán 16 </span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="flash-sale__item grid__column-2">
-                                    <a href="#" class="flash-sale__item-link">
-                                        <img
-                                            src="${pageContext.request.contextPath}/assets/img/flash-sale/cap.jpg"
-                                            alt="Flash Sale"
-                                            class="flash-sale__item-img"
-                                            />
-                                        <p class="flash-sale__item-price">₫1.000</p>
-                                        <div class="flash-sale__item-progress">
-                                            <div
-                                                class="flash-sale__progress-state"
-                                                style="left: 14px"
-                                                ></div>
-                                            <span class="flash-sale__progress-text"> đã bán 4 </span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end: flash-sale -->
-
                         <!-- start: product  -->
-                        <div class="home-product">
+                        <div class="home-product" id="goi-y-hom-nay">
                             <div class="home-product__heading">gợi ý hôm nay</div>
                             <div class="home-product__list">
-                                <div class="grid__row">
-                                    <c:forEach items="${listProduct}" var="p">
-                                        <div class="grid__column-2">
-                                            <a href="product-detail?id=${p.productID}" class="home-product__item">
-                                                <div
-                                                    class="home-product__item-img"
-                                                    style="
-                                                    background-image: url(${pageContext.request.contextPath}/assets/img/product/${p.image});
-                                                    "
-                                                    ></div>
-                                                <p class="home-product__item-content">
-                                                    ${p.productName}
-                                                </p>
-                                                <div class="home-product__price-wrapper">
-                                                    <span class="home-product__item-price">
-                                                        <fmt:formatNumber value="${p.price}" pattern="#,###" /> đ
-                                                    </span>
-                                                    <span class="home-product__item-sold">Đã bán ${p.soldQuantity}</span>
-<!--                                                    <span class="home-product__item-sold">Số lượng ${p.quantity}</span>-->
-                                                </div>
-
-                                            </a>
-                                        </div>
-                                    </c:forEach>
-
+                                <div class="grid__row" id="homeProductGrid">
+                                    <jsp:include page="home-product-items.jsp"></jsp:include>
                                 </div>
-                                <!-- start: paginations -->
-                                <ul class="pagination home-product__pagination">
-    
-                                    <li class="pagination-item">
-                                        <a href="${currentPage > 1 ? 'home?page=' += (currentPage - 1) : '#'}" class="pagination-item__link">
-                                            <i class="fa-solid fa-chevron-left"></i>
+                                <c:if test="${hasMoreProducts}">
+                                    <div id="loadMoreWrapper" style="display:flex;justify-content:center;margin:28px 0 8px;">
+                                        <a href="home?limit=${nextLimit}&seed=${randomSeed}#goi-y-hom-nay"
+                                           id="loadMoreProducts"
+                                           class="btn btn--primary"
+                                           data-offset="${nextOffset}"
+                                           data-seed="${randomSeed}"
+                                           style="min-width:220px;">
+                                            Bấm để load thêm
                                         </a>
-                                    </li>
-
-                                    <c:forEach begin="1" end="${totalPages}" var="i">
-                                        <li class="pagination-item ${currentPage == i ? 'pagination-item--active' : ''}">
-                                            <a href="home?page=${i}" class="pagination-item__link">${i}</a>
-                                        </li>
-                                    </c:forEach>
-
-                                    <li class="pagination-item">
-                                        <a href="${currentPage < totalPages ? 'home?page=' += (currentPage + 1) : '#'}" class="pagination-item__link">
-                                            <i class="fa-solid fa-chevron-right"></i>
-                                        </a>
-                                    </li>
-
-                                </ul>
-                                <!-- end: paginations -->
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                         <!-- end: product  -->
@@ -434,5 +265,66 @@
 
             
             <script src="${pageContext.request.contextPath}/script/main.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const grid = document.getElementById('homeProductGrid');
+                    const wrapper = document.getElementById('loadMoreWrapper');
+                    const button = document.getElementById('loadMoreProducts');
+
+                    if (!grid || !wrapper || !button) {
+                        return;
+                    }
+
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        if (button.dataset.loading === 'true') {
+                            return;
+                        }
+
+                        button.dataset.loading = 'true';
+                        const oldText = button.textContent;
+                        button.textContent = 'Đang tải...';
+
+                        const url = 'home?ajax=products&offset='
+                                + encodeURIComponent(button.dataset.offset)
+                                + '&seed='
+                                + encodeURIComponent(button.dataset.seed);
+
+                        fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                                .then(function (response) {
+                                    if (!response.ok) {
+                                        throw new Error('Load failed');
+                                    }
+                                    return response.text();
+                                })
+                                .then(function (html) {
+                                    const temp = document.createElement('div');
+                                    temp.innerHTML = html;
+                                    const state = temp.querySelector('#load-more-state');
+
+                                    if (state) {
+                                        button.dataset.offset = state.dataset.nextOffset;
+                                        if (state.dataset.hasMore !== 'true') {
+                                            wrapper.remove();
+                                        }
+                                        state.remove();
+                                    }
+
+                                    Array.from(temp.children).forEach(function (node) {
+                                        grid.appendChild(node);
+                                    });
+                                })
+                                .catch(function () {
+                                    window.location.href = button.href;
+                                })
+                                .finally(function () {
+                                    if (document.body.contains(button)) {
+                                        button.dataset.loading = 'false';
+                                        button.textContent = oldText;
+                                    }
+                                });
+                    });
+                });
+            </script>
     </body>
 </html>

@@ -53,7 +53,7 @@ public class ProductDAO extends GenericDAO<Product> {
     }
 
     public int findTotalProducts() {
-        String sql = "SELECT COUNT(*) FROM [dbo].[Product]";
+        String sql = "SELECT COUNT(*) FROM [dbo].[Product] WHERE [status] = 1";
         try {
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
@@ -513,5 +513,36 @@ public class ProductDAO extends GenericDAO<Product> {
             closeResources();
         }
         return 0;
+    }
+
+    public List<Product> randomProducts(int limit, int seed) {
+        return randomProducts(0, limit, seed);
+    }
+
+    public List<Product> randomProducts(int offset, int limit, int seed) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.*, u.[fullName] AS sellerName "
+                + "FROM [dbo].[Product] p "
+                + "LEFT JOIN [dbo].[User] u ON p.[sellerID] = u.[userID] "
+                + "WHERE p.[status] = 1 "
+                + "ORDER BY CHECKSUM(CONCAT(CAST(p.[productID] AS varchar(20)), ?)) "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, seed);
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                list.add(mapResultSetToProduct(resultSet));
+            }
+        } catch (Exception e) {
+            System.out.println("Error at ProductDAO.randomProducts(): " + e.getMessage());
+        } finally {
+            closeResources();
+        }
+        return list;
     }
 }
